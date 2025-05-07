@@ -179,6 +179,106 @@ html {
   100% { width: 100%; }
 }
 
+/* Slow pulse animation for UI elements */
+@keyframes pulse-slow {
+  0% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+  100% { opacity: 0.5; transform: scale(1); }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+
+/* Float animation for particles and elements */
+@keyframes float-slow {
+  0% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-10px) translateX(5px); }
+  50% { transform: translateY(0) translateX(10px); }
+  75% { transform: translateY(10px) translateX(5px); }
+  100% { transform: translateY(0) translateX(0); }
+}
+
+.animate-float-slow {
+  animation: float-slow 10s ease-in-out infinite;
+}
+
+/* Orbit animation for elements */
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(50px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(50px) rotate(-360deg);
+  }
+}
+
+.animate-orbit {
+  animation: orbit 10s linear infinite;
+}
+
+/* Reveal animations for sections */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-up {
+  transform: translateY(50px);
+}
+
+.fade-down {
+  transform: translateY(-50px);
+}
+
+.fade-left {
+  transform: translateX(50px);
+}
+
+.fade-right {
+  transform: translateX(-50px);
+}
+
+/* Add RGB color variables for use with rgba */
+:root {
+  --violet-200-rgb: 221, 214, 254;
+  --violet-500-rgb: 139, 92, 246;
+  --fuchsia-200-rgb: 232, 213, 249;
+  --fuchsia-500-rgb: 217, 70, 239;
+  --blue-200-rgb: 191, 219, 254;
+  --blue-500-rgb: 59, 130, 246;
+  --amber-200-rgb: 253, 230, 138;
+  --amber-500-rgb: 245, 158, 11;
+  --emerald-200-rgb: 167, 243, 208;
+  --emerald-500-rgb: 16, 185, 129;
+  --indigo-200-rgb: 199, 210, 254;
+  --indigo-500-rgb: 99, 102, 241;
+  --teal-200-rgb: 153, 246, 228;
+  --teal-500-rgb: 20, 184, 166;
+  --orange-200-rgb: 254, 215, 170;
+  --orange-500-rgb: 249, 115, 22;
+  --pink-200-rgb: 251, 207, 232;
+  --pink-500-rgb: 236, 72, 153;
+  --cyan-200-rgb: 165, 243, 252;
+  --cyan-500-rgb: 6, 182, 212;
+}
+
+/* Hover card rise effect */
+.hover-card-rise {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card-rise:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
 .animate-loading-bar {
   animation: loading-bar 3s ease-in-out infinite;
 }

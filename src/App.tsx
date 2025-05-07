@@ -29,6 +29,7 @@ import {
 import heroImage from './assets/hero.png';
 import WebDevelopment from './WebDevelopment';
 import AIDevelopment from './AIDevelopment';
+import CustomAIAgents from './CustomAIAgents';
 
 // Main App component that contains the home page content
 const Home = () => {
@@ -846,6 +847,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/services/web-development" element={<WebDevelopment />} />
         <Route path="/services/ai-development" element={<AIDevelopment />} />
+        <Route path="/services/custom-ai-agents" element={<CustomAIAgents />} />
       </Routes>
     </Router>
   );
