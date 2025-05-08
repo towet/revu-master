@@ -30,6 +30,10 @@ import heroImage from './assets/hero.png';
 import WebDevelopment from './WebDevelopment';
 import AIDevelopment from './AIDevelopment';
 import CustomAIAgents from './CustomAIAgents';
+import SocialMediaMarketing from './SocialMediaMarketing';
+import SearchEngineOptimization from './SearchEngineOptimization';
+import DataAnalytics from './DataAnalytics';
+import ScrollToTop from './ScrollToTop';
 
 // Main App component that contains the home page content
 const Home = () => {
@@ -450,11 +454,11 @@ const Home = () => {
                   <p className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
                     AI-powered chatbots for 24/7 customer support and lead generation, providing intelligent automated conversations that feel natural and helpful.
                   </p>
-                  <a href="#" 
+                  <Link to="/services/ai-development" 
                     className="inline-flex items-center text-blue-500 font-semibold hover:text-blue-600 transition-colors duration-300 group/learn mt-2">
                     Learn More
                     <ArrowRight className="w-4 h-4 ml-2 transform group-hover/learn:translate-x-1 transition-transform duration-300" />
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500/0 via-blue-500 to-blue-500/0 
@@ -494,11 +498,11 @@ const Home = () => {
                   <p className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
                     Tailored AI agents that automate complex business tasks, leveraging the latest in large language models and machine learning to boost efficiency.
                   </p>
-                  <a href="#" 
+                  <Link to="/services/custom-ai-agents" 
                     className="inline-flex items-center text-purple-500 font-semibold hover:text-purple-600 transition-colors duration-300 group/learn mt-2">
                     Learn More
                     <ArrowRight className="w-4 h-4 ml-2 transform group-hover/learn:translate-x-1 transition-transform duration-300" />
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500/0 via-purple-500 to-purple-500/0 
@@ -538,11 +542,11 @@ const Home = () => {
                   <p className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
                     Strategic content creation and community engagement to boost your brand presence across all social media platforms.
                   </p>
-                  <a href="#" 
+                  <Link to="/services/social-media-marketing" 
                     className="inline-flex items-center text-pink-500 font-semibold hover:text-pink-600 transition-colors duration-300 group/learn mt-2">
                     Learn More
                     <ArrowRight className="w-4 h-4 ml-2 transform group-hover/learn:translate-x-1 transition-transform duration-300" />
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500/0 via-pink-500 to-pink-500/0 
@@ -582,11 +586,11 @@ const Home = () => {
                   <p className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
                     Data-driven strategies to improve your search rankings and online visibility, driving organic traffic and qualified leads to your business.
                   </p>
-                  <a href="#" 
+                  <Link to="/services/search-engine-optimization" 
                     className="inline-flex items-center text-green-500 font-semibold hover:text-green-600 transition-colors duration-300 group/learn mt-2">
                     Learn More
                     <ArrowRight className="w-4 h-4 ml-2 transform group-hover/learn:translate-x-1 transition-transform duration-300" />
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-green-500/0 via-green-500 to-green-500/0 
@@ -626,11 +630,11 @@ const Home = () => {
                   <p className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
                     Transform raw data into actionable insights with custom dashboards and AI-powered analytics that drive better business decisions.
                   </p>
-                  <a href="#" 
+                  <Link to="/services/data-analytics" 
                     className="inline-flex items-center text-cyan-500 font-semibold hover:text-cyan-600 transition-colors duration-300 group/learn mt-2">
                     Learn More
                     <ArrowRight className="w-4 h-4 ml-2 transform group-hover/learn:translate-x-1 transition-transform duration-300" />
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500/0 via-cyan-500 to-cyan-500/0 
@@ -843,11 +847,15 @@ const Home = () => {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/services/web-development" element={<WebDevelopment />} />
         <Route path="/services/ai-development" element={<AIDevelopment />} />
         <Route path="/services/custom-ai-agents" element={<CustomAIAgents />} />
+        <Route path="/services/social-media-marketing" element={<SocialMediaMarketing />} />
+        <Route path="/services/search-engine-optimization" element={<SearchEngineOptimization />} />
+        <Route path="/services/data-analytics" element={<DataAnalytics />} />
       </Routes>
     </Router>
   );
