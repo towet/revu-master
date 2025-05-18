@@ -3,8 +3,25 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
   body {
     @apply antialiased;
+    overflow-x: hidden;
+  }
+  
+  /* Optimize performance */
+  .smooth-scroll {
+    -webkit-overflow-scrolling: touch; /* For iOS */
+    scroll-behavior: smooth;
+  }
+  
+  /* Reduce repaints */
+  * {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
   }
 }
 
@@ -165,25 +182,28 @@
   pointer-events: none;
   opacity: 0.5;
   z-index: 0;
+  will-change: transform; /* Hint to browser to optimize transform animations */
+  transform: translateZ(0); /* Force GPU acceleration */
 }
 
 @keyframes particle-float {
   0%, 100% {
-    transform: translateY(0) translateX(0);
+    transform: translateY(0) translateX(0) translateZ(0);
   }
   25% {
-    transform: translateY(-30px) translateX(15px);
+    transform: translateY(-30px) translateX(15px) translateZ(0);
   }
   50% {
-    transform: translateY(-15px) translateX(-15px);
+    transform: translateY(-15px) translateX(-15px) translateZ(0);
   }
   75% {
-    transform: translateY(30px) translateX(5px);
+    transform: translateY(30px) translateX(5px) translateZ(0);
   }
 }
 
 .animate-particle {
   animation: particle-float calc(20s + (var(--random) * 10s)) linear infinite;
+  backface-visibility: hidden; /* Reduce composite operations */
 }
 
 /* Glassmorphism effect */

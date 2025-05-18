@@ -66,12 +66,27 @@ const Home = () => {
     window.open('mailto:nexuscollective103@gmail.com', '_blank');
   }, []);
 
+  // Optimize scroll performance
+  useEffect(() => {
+    // Add a class to the body to enable smooth scrolling
+    document.body.classList.add('smooth-scroll');
+    
+    // Return cleanup function
+    return () => {
+      document.body.classList.remove('smooth-scroll');
+    };
+  }, []);
+  
+  // Animation observer with optimized performance
   useEffect(() => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-        }
+      // Use requestAnimationFrame to batch DOM updates
+      window.requestAnimationFrame(() => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
       });
     };
 
@@ -80,7 +95,9 @@ const Home = () => {
       rootMargin: '0px 0px -50px 0px'
     });
 
-    document.querySelectorAll('.reveal, .slide-in-left, .slide-in-right, .fade-scale, .rotate-in').forEach(el => observer.observe(el));
+    // Collect all elements first, then observe them in a batch
+    const elements = document.querySelectorAll('.reveal, .slide-in-left, .slide-in-right, .fade-scale, .rotate-in');
+    elements.forEach(el => observer.observe(el));
 
     return () => observer.disconnect();
   }, []);
@@ -653,100 +670,16 @@ const Home = () => {
                             transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></div>
             </div>
 
-            {/* AI Chatbot Development */}
-            <div className="reveal group relative overflow-hidden rounded-2xl bg-white transition-all duration-500 hover:shadow-2xl border border-gray-100 hover:border-blue-200"
-                style={{ transitionDelay: '100ms', boxShadow: '0 10px 40px -15px rgba(0, 0, 0, 0.1)' }}>
-              <div className="relative h-52 overflow-hidden">
-                <img 
-                  src="https://www.orientsoftware.com/Themes/Content/Images/blog/2023-12-12/chatbot-implementation-in-business.jpg" 
-                  alt="AI Chatbot Development"
-                  className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
-                  <MessageCircle className="w-6 h-6 text-blue-500" />
-                </div>
-                <div className="absolute bottom-0 left-0 p-4">
-                  <div className="inline-block px-2 py-1 bg-blue-500 text-white text-xs font-semibold rounded-md">
-                    🤖 AI Development
-                  </div>
-                </div>
-              </div>
-              
-              <div className="p-6 relative">
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-500 transition-all duration-300">
-                    AI Chatbot Development
-                  </h3>
-                  <div className="flex flex-wrap gap-2 my-3">
-                    <span className="inline-block px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded-md">24/7 Support</span>
-                    <span className="inline-block px-2 py-1 bg-purple-50 text-purple-600 text-xs rounded-md">Lead Generation</span>
-                    <span className="inline-block px-2 py-1 bg-indigo-50 text-indigo-600 text-xs rounded-md">NLP Powered</span>
-                  </div>
-                  <p className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
-                    AI-powered chatbots for 24/7 customer support and lead generation, providing intelligent automated conversations that feel natural and helpful.
-                  </p>
-                  <Link to="/services/ai-development" 
-                    className="inline-flex items-center text-blue-500 font-semibold hover:text-blue-600 transition-colors duration-300 group/learn mt-2">
-                    Learn More
-                    <ArrowRight className="w-4 h-4 ml-2 transform group-hover/learn:translate-x-1 transition-transform duration-300" />
-                  </Link>
-                </div>
-              </div>
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500/0 via-blue-500 to-blue-500/0 
-                            transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></div>
-            </div>
 
-            {/* Custom AI Agents */}
-            <div className="reveal group relative overflow-hidden rounded-2xl bg-white transition-all duration-500 hover:shadow-2xl border border-gray-100 hover:border-purple-200"
-                style={{ transitionDelay: '200ms', boxShadow: '0 10px 40px -15px rgba(0, 0, 0, 0.1)' }}>
-              <div className="relative h-52 overflow-hidden">
-                <img 
-                  src="https://www.zdnet.com/a/img/resize/8d0894cdabdb3ee0a7eb5042d8e2e99e8cd05b5c/2023/11/16/c7eb46be-ce33-4e87-ab04-41bd8e102c01/gettyimages-1488743282.jpg?auto=webp&fit=crop&height=900&width=1200" 
-                  alt="Custom AI Agents"
-                  className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
-                  <Rocket className="w-6 h-6 text-purple-500" />
-                </div>
-                <div className="absolute bottom-0 left-0 p-4">
-                  <div className="inline-block px-2 py-1 bg-purple-500 text-white text-xs font-semibold rounded-md">
-                    🚀 AI Agents
-                  </div>
-                </div>
-              </div>
-              
-              <div className="p-6 relative">
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-purple-500 transition-all duration-300">
-                    Custom AI Agents
-                  </h3>
-                  <div className="flex flex-wrap gap-2 my-3">
-                    <span className="inline-block px-2 py-1 bg-purple-50 text-purple-600 text-xs rounded-md">Automation</span>
-                    <span className="inline-block px-2 py-1 bg-indigo-50 text-indigo-600 text-xs rounded-md">Workflow</span>
-                    <span className="inline-block px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded-md">Productivity</span>
-                  </div>
-                  <p className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
-                    Advanced AI agents built to automate complex tasks, enhance productivity, and deliver valuable insights for your business processes.
-                  </p>
-                  <Link to="/services/custom-ai-agents" 
-                    className="inline-flex items-center text-purple-500 font-semibold hover:text-purple-600 transition-colors duration-300 group/learn mt-2">
-                    Learn More
-                    <ArrowRight className="w-4 h-4 ml-2 transform group-hover/learn:translate-x-1 transition-transform duration-300" />
-                  </Link>
-                </div>
-              </div>
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500/0 via-purple-500 to-purple-500/0 
-                            transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></div>
-            </div>
+
+
 
             {/* Paid Ads */}
             <div className="reveal group relative overflow-hidden rounded-2xl bg-white transition-all duration-500 hover:shadow-2xl border border-gray-100 hover:border-green-200"
                 style={{ transitionDelay: '300ms', boxShadow: '0 10px 40px -15px rgba(0, 0, 0, 0.1)' }}>
               <div className="relative h-52 overflow-hidden">
                 <img 
-                  src="https://searchengineland.com/wp-content/seloads/2021/07/google-ads-1920-1080x608.png" 
+                  src="https://era9r2jcsww.exactdn.com/wp-content/uploads/2023/08/5-2.jpg?strip=all&lossy=1&quality=80&ssl=1" 
                   alt="Paid Ads"
                   className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
                 />
@@ -790,7 +723,7 @@ const Home = () => {
                 style={{ transitionDelay: '400ms', boxShadow: '0 10px 40px -15px rgba(0, 0, 0, 0.1)' }}>
               <div className="relative h-52 overflow-hidden">
                 <img 
-                  src="https://wallpaperaccess.com/full/1567666.jpg" 
+                  src="https://blog-frontend.envato.com/cdn-cgi/image/width=1200,quality=75,format=auto,fit=crop,height=630/uploads/sites/2/2023/02/Tuts_Roundup__Top_Graphic_Design_Courses.jpeg" 
                   alt="Graphic Design"
                   className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
                 />
@@ -873,93 +806,9 @@ const Home = () => {
                             transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></div>
             </div>
             
-            {/* SEO & Digital Marketing */}
-            <div className="reveal group relative overflow-hidden rounded-2xl bg-white transition-all duration-500 hover:shadow-2xl border border-gray-100 hover:border-green-200"
-                style={{ transitionDelay: '400ms', boxShadow: '0 10px 40px -15px rgba(0, 0, 0, 0.1)' }}>
-              <div className="relative h-52 overflow-hidden">
-                <img 
-                  src="https://www.webappsplanet.com/images/search-engine-optimization.png" 
-                  alt="SEO & Digital Marketing"
-                  className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
-                  <Search className="w-6 h-6 text-green-500" />
-                </div>
-                <div className="absolute bottom-0 left-0 p-4">
-                  <div className="inline-block px-2 py-1 bg-green-500 text-white text-xs font-semibold rounded-md">
-                    🔍 SEO & Marketing
-                  </div>
-                </div>
-              </div>
-              
-              <div className="p-6 relative">
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-green-500 transition-all duration-300">
-                    Search Engine Optimization (SEO)
-                  </h3>
-                  <div className="flex flex-wrap gap-2 my-3">
-                    <span className="inline-block px-2 py-1 bg-green-50 text-green-600 text-xs rounded-md">Keyword Research</span>
-                    <span className="inline-block px-2 py-1 bg-emerald-50 text-emerald-600 text-xs rounded-md">On-page SEO</span>
-                    <span className="inline-block px-2 py-1 bg-teal-50 text-teal-600 text-xs rounded-md">Backlink Strategy</span>
-                  </div>
-                  <p className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
-                    Data-driven strategies to improve your search rankings and online visibility, driving organic traffic and qualified leads to your business.
-                  </p>
-                  <Link to="/services/search-engine-optimization" 
-                    className="inline-flex items-center text-green-500 font-semibold hover:text-green-600 transition-colors duration-300 group/learn mt-2">
-                    Learn More
-                    <ArrowRight className="w-4 h-4 ml-2 transform group-hover/learn:translate-x-1 transition-transform duration-300" />
-                  </Link>
-                </div>
-              </div>
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-green-500/0 via-green-500 to-green-500/0 
-                            transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></div>
-            </div>
+
             
-            {/* Data Analytics & Visualization */}
-            <div className="reveal group relative overflow-hidden rounded-2xl bg-white transition-all duration-500 hover:shadow-2xl border border-gray-100 hover:border-cyan-200"
-                style={{ transitionDelay: '500ms', boxShadow: '0 10px 40px -15px rgba(0, 0, 0, 0.1)' }}>
-              <div className="relative h-52 overflow-hidden">
-                <img 
-                  src="https://cdn.sanity.io/images/vk5sd2rx/production/a4d420638a1e7bc8c1fd0f08c345be4f651311c4-1600x900.png" 
-                  alt="Data Analytics & Visualization"
-                  className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
-                  <BarChart2 className="w-6 h-6 text-cyan-500" />
-                </div>
-                <div className="absolute bottom-0 left-0 p-4">
-                  <div className="inline-block px-2 py-1 bg-cyan-500 text-white text-xs font-semibold rounded-md">
-                    📊 Data Analytics
-                  </div>
-                </div>
-              </div>
-              
-              <div className="p-6 relative">
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-cyan-500 transition-all duration-300">
-                    Data Analytics & Visualization
-                  </h3>
-                  <div className="flex flex-wrap gap-2 my-3">
-                    <span className="inline-block px-2 py-1 bg-cyan-50 text-cyan-600 text-xs rounded-md">Real-time Dashboards</span>
-                    <span className="inline-block px-2 py-1 bg-sky-50 text-sky-600 text-xs rounded-md">Business Intelligence</span>
-                    <span className="inline-block px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded-md">AI Insights</span>
-                  </div>
-                  <p className="text-gray-600 group-hover:text-gray-700 transition-all duration-300">
-                    Transform raw data into actionable insights with custom dashboards and AI-powered analytics that drive better business decisions.
-                  </p>
-                  <Link to="/services/data-analytics" 
-                    className="inline-flex items-center text-cyan-500 font-semibold hover:text-cyan-600 transition-colors duration-300 group/learn mt-2">
-                    Learn More
-                    <ArrowRight className="w-4 h-4 ml-2 transform group-hover/learn:translate-x-1 transition-transform duration-300" />
-                  </Link>
-                </div>
-              </div>
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500/0 via-cyan-500 to-cyan-500/0 
-                            transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></div>
-            </div>
+
           </div>
           
           {/* View All Services Button */}

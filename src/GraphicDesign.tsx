@@ -129,7 +129,7 @@ const GraphicDesign: React.FC = () => {
               </div>
               
               {/* Main Heading */}
-              <h1 className="text-5xl lg:text-6xl font-bold">
+              <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
                 <span className="animated-text-reveal block text-indigo-700">Captivating</span>
                 <span className="animated-text-reveal-delay block text-purple-600">Graphic Design</span>
               </h1>
@@ -180,73 +180,74 @@ const GraphicDesign: React.FC = () => {
               </div>
             </div>
             
-            {/* Right 3D Visual Column */}
+            {/* Right 3D Visual Column - Modern Redesign */}
             <div className="relative slide-in-right">
               {/* 3D Design Elements Container */}
               <div className="relative z-10 perspective-1000 lg:max-w-[90%] xl:max-w-[80%] mx-auto">
                 {/* Main Showcase with 3D Tilt Effect */}
-                <div className="relative tilt-effect group transform-gpu">
+                <div className="relative group transform-gpu transition-transform duration-300 hover:scale-[1.02]">
                   {/* Main Visual - Design Showcase */}
                   <div className="rounded-2xl overflow-hidden shadow-2xl">
                     <div className="relative bg-gradient-to-br from-indigo-800 to-purple-800 aspect-[4/3] p-6 flex items-center justify-center">
-                      {/* Design Elements */}
-                      <div className="absolute top-6 left-6 glass-effect w-24 h-24 rounded-lg shadow-lg transform rotate-12 animate-float-slow">
-                        <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg opacity-80"></div>
-                        <div className="absolute inset-2 bg-white/10 rounded-md backdrop-blur-sm flex items-center justify-center">
-                          <PenTool className="w-10 h-10 text-white" />
+                      {/* Modern Design Elements */}
+                      <div className="absolute top-6 left-6 w-24 h-24 rounded-md shadow-lg transform rotate-12 animate-float-slow bg-white">
+                        <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-500 rounded-md opacity-90"></div>
+                        <div className="absolute inset-0 rounded-md flex items-center justify-center">
+                          <PenTool className="w-10 h-10 text-white drop-shadow-md" />
                         </div>
                       </div>
                       
-                      <div className="absolute bottom-10 right-8 glass-effect w-28 h-16 rounded-lg shadow-lg transform -rotate-6 animate-float">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg opacity-80"></div>
-                        <div className="absolute inset-2 bg-white/10 rounded-md backdrop-blur-sm flex items-center justify-center">
-                          <Layout className="w-8 h-8 text-white" />
+                      <div className="absolute bottom-10 right-8 w-28 h-16 rounded-md shadow-lg transform -rotate-6 animate-float bg-white">
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-md opacity-90"></div>
+                        <div className="absolute inset-0 rounded-md flex items-center justify-center">
+                          <Layout className="w-8 h-8 text-white drop-shadow-md" />
                         </div>
                       </div>
                       
-                      <div className="absolute top-24 right-12 glass-effect w-20 h-20 rounded-lg shadow-lg transform rotate-45 animate-float-reverse-slow">
-                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg opacity-80"></div>
-                        <div className="absolute inset-2 bg-white/10 rounded-md backdrop-blur-sm flex items-center justify-center">
-                          <Image className="w-8 h-8 text-white" />
+                      <div className="absolute top-24 right-12 w-20 h-20 rounded-md shadow-lg transform rotate-45 animate-float-reverse-slow bg-white">
+                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-md opacity-90"></div>
+                        <div className="absolute inset-0 rounded-md flex items-center justify-center">
+                          <Image className="w-8 h-8 text-white drop-shadow-md" />
                         </div>
                       </div>
                       
-                      <div className="relative glass-effect rounded-2xl p-6 shadow-xl w-64 h-64 flex items-center justify-center z-20 border border-white/20">
-                        <div className="absolute inset-0 bg-white/10 rounded-2xl backdrop-blur-md"></div>
-                        <div className="text-center relative z-10">
-                          <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl mx-auto mb-4 flex items-center justify-center shadow-lg">
-                            <Layers className="w-10 h-10 text-white" />
+                      {/* Modern Central Card */}
+                      <div className="relative rounded-2xl p-6 shadow-2xl w-64 h-64 flex items-center justify-center z-20 border-2 border-white/50 bg-white group/card">
+                        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-2xl"></div>
+                        <div className="text-center relative z-10 transition-transform duration-300 group-hover/card:scale-105">
+                          <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl mx-auto mb-4 flex items-center justify-center shadow-lg transition-transform duration-300 hover:rotate-[5deg] hover:scale-110">
+                            <Layers className="w-10 h-10 text-white drop-shadow-lg" />
                           </div>
-                          <h3 className="text-white text-xl font-bold">Elevate Your Brand</h3>
-                          <p className="text-white/90 text-sm mt-2">Creative designs that make an impact</p>
+                          <h3 className="text-indigo-900 text-xl font-bold">Elevate Your Brand</h3>
+                          <p className="text-indigo-700 text-sm mt-2">Creative designs that make an impact</p>
                         </div>
                       </div>
                       
-                      {/* Additional floating elements */}
-                      <div className="absolute top-1/2 left-1/3 w-8 h-8 bg-pink-500 rounded-full opacity-60 blur-sm animate-pulse-slow"></div>
-                      <div className="absolute bottom-1/3 right-1/4 w-6 h-6 bg-blue-500 rounded-full opacity-60 blur-sm animate-pulse-slow delay-300"></div>
-                      <div className="absolute top-1/4 right-1/3 w-4 h-4 bg-purple-500 rounded-full opacity-60 blur-sm animate-pulse-slow delay-700"></div>
+                      {/* Interactive Shape Elements */}
+                      <div className="absolute top-1/2 left-1/3 w-8 h-8 bg-pink-500 rounded-md opacity-80 animate-ping-slow"></div>
+                      <div className="absolute bottom-1/3 right-1/4 w-6 h-6 bg-blue-500 rounded-md opacity-80 animate-ping-slow delay-300"></div>
+                      <div className="absolute top-1/4 right-1/3 w-4 h-4 bg-purple-500 rounded-md opacity-80 animate-ping-slow delay-700"></div>
                     </div>
                   </div>
                   
-                  {/* Overlay glassmorphism effect on hover */}
-                  <div className="absolute inset-0 rounded-2xl glass-effect opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none"></div>
+                  {/* Modern hover effect */}
+                  <div className="absolute inset-0 rounded-2xl border-2 border-indigo-500/0 hover:border-indigo-500/100 transition-all duration-300 pointer-events-none"></div>
                 </div>
                 
-                {/* Floating mockup elements */}
-                <div className="absolute -bottom-6 -right-6 glass-effect rounded-xl p-4 shadow-xl animate-float transform rotate-6 w-40 border border-white/10">
-                  <div className="bg-white/5 backdrop-blur-md rounded-lg p-3 flex flex-col items-center">
-                    <div className="w-full h-2 bg-purple-500/70 rounded-full mb-2"></div>
-                    <div className="w-3/4 h-2 bg-indigo-500/70 rounded-full mb-2"></div>
-                    <div className="w-1/2 h-2 bg-blue-500/70 rounded-full"></div>
+                {/* Modern Floating Elements */}
+                <div className="absolute -bottom-6 -right-6 rounded-xl p-4 shadow-xl animate-float transform rotate-6 w-40 border-2 border-indigo-500 bg-white">
+                  <div className="bg-gradient-to-r from-indigo-500/5 to-purple-500/5 rounded-lg p-3 flex flex-col items-center">
+                    <div className="w-full h-2 bg-purple-500 rounded-full mb-2"></div>
+                    <div className="w-3/4 h-2 bg-indigo-500 rounded-full mb-2"></div>
+                    <div className="w-1/2 h-2 bg-blue-500 rounded-full"></div>
                   </div>
                 </div>
                 
-                <div className="absolute -left-10 top-1/3 glass-effect rounded-xl p-2 shadow-xl animate-float-reverse transform -rotate-12 w-24 border border-white/10">
-                  <div className="bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-lg p-2 flex flex-col items-center">
-                    <div className="w-6 h-6 rounded-full bg-indigo-500/70 mb-2"></div>
-                    <div className="w-full h-1 bg-purple-500/60 rounded-full mb-1"></div>
-                    <div className="w-full h-1 bg-purple-500/60 rounded-full"></div>
+                <div className="absolute -left-10 top-1/3 rounded-xl p-2 shadow-xl animate-float-reverse transform -rotate-12 w-24 border-2 border-purple-500 bg-white">
+                  <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-2 flex flex-col items-center">
+                    <div className="w-6 h-6 rounded-full bg-indigo-500 mb-2 hover:scale-110 transition-transform duration-300"></div>
+                    <div className="w-full h-1 bg-purple-500 rounded-full mb-1"></div>
+                    <div className="w-full h-1 bg-purple-500 rounded-full"></div>
                   </div>
                 </div>
               </div>

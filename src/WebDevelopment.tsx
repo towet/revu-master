@@ -40,18 +40,27 @@ const WebDevelopment: React.FC = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Parallax scrolling effect
+  // Parallax scrolling effect with throttling for smoother performance
   const [scrollY, setScrollY] = useState(0);
+  const [ticking, setTicking] = useState(false);
+  
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          setTicking(false);
+        });
+        setTicking(true);
+      }
     };
-    window.addEventListener('scroll', handleScroll);
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [ticking]);
 
   // Handler for CTA buttons is defined above
 
@@ -61,12 +70,12 @@ const WebDevelopment: React.FC = () => {
       <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-blue-50 via-white to-orange-50">
         {/* Decorative elements */}
         <div 
-          className="absolute top-0 right-0 w-1/3 h-1/3 bg-orange-500/5 rounded-bl-full" 
-          style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+          className="absolute top-0 right-0 w-1/3 h-1/3 bg-purple-500/5 rounded-bl-full transition-transform duration-200 ease-out" 
+          style={{ transform: `translateY(${Math.round(scrollY * 0.05)}px)` }}
         ></div>
         <div 
-          className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-blue-500/5 rounded-tr-full"
-          style={{ transform: `translateY(-${scrollY * 0.05}px)` }}
+          className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-blue-500/5 rounded-tr-full transition-transform duration-200 ease-out"
+          style={{ transform: `translateY(-${Math.round(scrollY * 0.03)}px)` }}
         ></div>
         
         {/* Abstract code background - subtle */}
@@ -81,16 +90,16 @@ const WebDevelopment: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8 slide-in-left">
               <div className="space-y-5">
-                <div className="inline-block px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm font-semibold mb-2 animate-pulse">
+                <div className="inline-block px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm font-semibold mb-2 animate-pulse">
                   Premium Web Development
                 </div>
                 <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
                   <span className="block text-gray-900">Build sleek, fast, and</span>
                   <div className="relative">
-                    <span className="block bg-gradient-to-r from-orange-600 via-red-500 to-orange-500 text-transparent bg-clip-text">
+                    <span className="block bg-gradient-to-r from-purple-600 via-indigo-500 to-purple-500 text-transparent bg-clip-text">
                       conversion-ready websites
                     </span>
-                    <div className="absolute -bottom-2 left-0 h-1 w-full bg-gradient-to-r from-orange-600 via-red-500 to-orange-500 rounded-full transform scale-x-0 transition-transform duration-1000 animate-scale-x-full"></div>
+                    <div className="absolute -bottom-2 left-0 h-1 w-full bg-gradient-to-r from-purple-600 via-indigo-500 to-purple-500 rounded-full transform scale-x-0 transition-transform duration-1000 animate-scale-x-full"></div>
                   </div>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">
@@ -102,9 +111,9 @@ const WebDevelopment: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button 
                   onClick={handleCTAClick} 
-                  className="px-8 py-4 bg-orange-500 text-white rounded-xl font-semibold 
-                          hover:bg-orange-600 transition-all duration-300 transform hover:scale-105
-                          shadow-lg hover:shadow-orange-500/20 flex items-center justify-center gap-2 group"
+                  className="px-8 py-4 bg-purple-600 text-white rounded-xl font-semibold 
+                          hover:bg-purple-700 transition-all duration-300 transform hover:scale-105
+                          shadow-lg hover:shadow-purple-500/20 flex items-center justify-center gap-2 group"
                 >
                   Get Started
                   <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" />
@@ -112,7 +121,7 @@ const WebDevelopment: React.FC = () => {
                 <button 
                   onClick={handleCTAClick}
                   className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold
-                          hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50 
+                          hover:border-purple-500 hover:text-purple-500 hover:bg-purple-50 
                           transition-all duration-300 flex items-center justify-center gap-2 group"
                 >
                   View Portfolio
@@ -1047,6 +1056,154 @@ const WebDevelopment: React.FC = () => {
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <section className="py-24 bg-gradient-to-b from-white to-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16 reveal">
+            <div className="inline-block px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm font-semibold mb-4">
+              Transparent Pricing
+            </div>
+            <h2 className="text-4xl font-bold mb-4">Web Design & Development Packages</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Choose the perfect package for your business needs with our transparent pricing options.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Basic Package */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transition-transform hover:scale-105 duration-300 reveal" style={{transitionDelay: '100ms'}}>
+              <div className="p-8 border-b border-gray-100">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Basic Package</h3>
+                <div className="flex items-baseline">
+                  <span className="text-4xl font-bold text-purple-600">KES 50,000</span>
+                  <span className="text-gray-500 ml-2">(one-time)</span>
+                </div>
+                <p className="text-gray-600 mt-4">Perfect for small businesses looking to establish their online presence.</p>
+              </div>
+              <div className="p-8">
+                <ul className="space-y-4">
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>Custom website design (up to 5 pages)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>Responsive web development</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>Basic SEO optimization</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>Contact form integration</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>Social media integration</span>
+                  </li>
+                </ul>
+                <button onClick={handleCTAClick} className="w-full mt-8 py-4 px-6 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-semibold transition-colors duration-300 flex items-center justify-center gap-2">
+                  Get Started
+                  <ArrowRight size={18} />
+                </button>
+              </div>
+            </div>
+            
+            {/* Standard Package */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-purple-500 transform scale-105 z-10 reveal" style={{transitionDelay: '200ms'}}>
+              <div className="bg-purple-600 text-white py-2 px-6 text-center text-sm font-semibold">
+                MOST POPULAR
+              </div>
+              <div className="p-8 border-b border-gray-100">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Standard Package</h3>
+                <div className="flex items-baseline">
+                  <span className="text-4xl font-bold text-purple-600">KES 100,000</span>
+                  <span className="text-gray-500 ml-2">(one-time)</span>
+                </div>
+                <p className="text-gray-600 mt-4">Ideal for growing businesses that need more features and pages.</p>
+              </div>
+              <div className="p-8">
+                <ul className="space-y-4">
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>Custom website design (up to 10 pages)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>Responsive web development</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>E-commerce solutions</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>Basic SEO optimization</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>1 month maintenance</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>Advanced contact forms</span>
+                  </li>
+                </ul>
+                <button onClick={handleCTAClick} className="w-full mt-8 py-4 px-6 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-semibold transition-colors duration-300 flex items-center justify-center gap-2">
+                  Get Started
+                  <ArrowRight size={18} />
+                </button>
+              </div>
+            </div>
+            
+            {/* Premium Package */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transition-transform hover:scale-105 duration-300 reveal" style={{transitionDelay: '300ms'}}>
+              <div className="p-8 border-b border-gray-100">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Premium Package</h3>
+                <div className="flex items-baseline">
+                  <span className="text-4xl font-bold text-purple-600">KES 150,000</span>
+                  <span className="text-gray-500 ml-2">(one-time)</span>
+                </div>
+                <p className="text-gray-600 mt-4">Complete solution for businesses requiring a comprehensive web presence.</p>
+              </div>
+              <div className="p-8">
+                <ul className="space-y-4">
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>Custom website design (unlimited pages)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>Responsive web development</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>E-commerce solutions</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>Advanced SEO optimization</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>3 months maintenance</span>
+                  </li>
+                  <li className="flex items-start">
+                    <Check className="text-green-500 mr-3 mt-1 flex-shrink-0" size={18} />
+                    <span>UI/UX design</span>
+                  </li>
+                </ul>
+                <button onClick={handleCTAClick} className="w-full mt-8 py-4 px-6 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-semibold transition-colors duration-300 flex items-center justify-center gap-2">
+                  Get Started
+                  <ArrowRight size={18} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       {/* Tech Stack Section */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-6">
@@ -1090,7 +1247,7 @@ const WebDevelopment: React.FC = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-orange-500 to-orange-600 text-white">
+      <section className="py-20 bg-gradient-to-br from-purple-600 to-purple-700 text-white">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center reveal">
             <h2 className="text-4xl font-bold mb-6">
@@ -1103,7 +1260,7 @@ const WebDevelopment: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <button 
                 onClick={handleCTAClick}
-                className="bg-white text-orange-600 hover:bg-gray-100 px-6 py-4 rounded-xl shadow-xl transition-all duration-300
+                className="bg-white text-purple-600 hover:bg-gray-100 px-6 py-4 rounded-xl shadow-xl transition-all duration-300
                         flex items-center justify-center gap-2 group font-semibold"
               >
                 <Phone className="w-5 h-5" />
