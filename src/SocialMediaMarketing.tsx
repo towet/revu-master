@@ -1,981 +1,698 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { 
-  ArrowRight, 
-  Facebook, 
-  Instagram, 
-  Twitter, 
-  Linkedin, 
-  Youtube, 
-  Users, 
-  MessageCircle, 
-  Award, 
-  BarChart2, 
-  Calendar, 
-  Shield, 
-  Zap, 
-  Clock, 
+  BarChart2,
+
   CheckCircle, 
+  MessageCircle, 
   Target, 
-  DollarSign, 
-  Eye, 
-  Globe,
   TrendingUp, 
-  ShoppingBag, 
-  Briefcase, 
-  Building, 
-  Bot, 
-  Search, 
-  Hash, 
-  Star, 
-  ThumbsUp,
+  Users,
+  Instagram,
+  Facebook,
+  Twitter,
+  Linkedin,
+  ArrowRight,
+  PieChart,
   Heart
 } from 'lucide-react';
 
-const SocialMediaMarketing = () => {
-  // Control animation states
-  const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({});
-  const [activeTab, setActiveTab] = useState(0);
-  const [activePlatform, setActivePlatform] = useState('instagram');
+const SocialMediaMarketing: React.FC = () => {
+  // Intersection Observer for animations
+  const heroRef = useRef<HTMLDivElement>(null);
+  const whyChooseUsRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const pricingRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
   
-  // Handle scroll animations and intersection observer
+  // State for counter animations
+  const [countersStarted, setCountersStarted] = useState(false);
+  
   useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.1
-    };
-
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach(entry => {
+    // Create observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setIsVisible(prev => ({
-            ...prev,
-            [entry.target.id]: true
-          }));
+          entry.target.classList.add('is-visible');
+          
+          // Start counters when stats section is visible
+          if (entry.target.id === 'results-title' && !countersStarted) {
+            setCountersStarted(true);
+          }
         }
       });
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, observerOptions);
+    }, { threshold: 0.1 });
     
-    // Observe all sections that should animate on scroll
-    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+    // Get all elements with the animate-on-scroll class
+    const animatedElements = document.querySelectorAll('.animate-on-scroll');
+    animatedElements.forEach(el => {
       observer.observe(el);
     });
-
-    return () => observer.disconnect();
+    
+    return () => {
+      // Clean up observer
+      animatedElements.forEach(el => {
+        observer.unobserve(el);
+      });
+    };
   }, []);
-
-  // Handle CTA button click
-  const handleCTAClick = () => {
-    window.location.href = '/contact';
-  };
 
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative pt-20 pb-28 overflow-hidden">
-        {/* Animated background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
-          {/* Floating social icons */}
-          <div className="absolute inset-0">
-            {['facebook', 'instagram', 'twitter', 'linkedin', 'youtube'].map((platform, index) => (
-              <div 
-                key={platform}
-                className="absolute animate-float opacity-10"
-                style={{
-                  top: `${Math.random() * 80 + 10}%`,
-                  left: `${Math.random() * 80 + 10}%`,
-                  animationDelay: `${index * 0.7}s`,
-                  transform: `scale(${0.5 + Math.random() * 1.5})`
-                }}
-              >
-                {platform === 'facebook' && <Facebook size={40} className="text-blue-500" />}
-                {platform === 'instagram' && <Instagram size={40} className="text-pink-500" />}
-                {platform === 'twitter' && <Twitter size={40} className="text-blue-400" />}
-                {platform === 'linkedin' && <Linkedin size={40} className="text-blue-700" />}
-                {platform === 'youtube' && <Youtube size={40} className="text-red-500" />}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Content Container */}
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            {/* Hero Content */}
-            <div className="lg:w-1/2" id="hero-content">
-              <div className="inline-block px-3 py-1 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full text-sm font-semibold text-white mb-4 animate-pulse">
-                Elevate Your Social Presence
-              </div>
-              
-              <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6">
-                <span className="block text-gray-900">Social Media</span>
-                <div className="relative">
-                  <span className="relative z-10 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 text-transparent bg-clip-text inline-block">
-                    Marketing & Management
-                  </span>
-                  <div className="absolute -bottom-2 left-0 h-1 w-full bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 rounded-full transform origin-left animate-expand"></div>
-                </div>
-              </h1>
-              
-              <p className="text-xl text-gray-600 mb-8 max-w-xl animate-fade-in">
-                We create, schedule, analyze, and optimize content across platforms to grow your brand, engage your audience, and drive traffic or sales.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <button 
-                  onClick={handleCTAClick}
-                  className="relative overflow-hidden px-8 py-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 
-                           text-white rounded-xl font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 
-                           shadow-lg hover:shadow-pink-500/30 group"
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    Start Growing Now
-                    <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </span>
-                  
-                  {/* Button animation effects */}
-                  <span className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-purple-700 via-pink-700 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  <span className="absolute -top-20 -right-20 w-40 h-40 bg-white/20 rounded-full transform scale-0 group-hover:scale-100 transition-transform duration-700 ease-out blur-xl"></span>
-                </button>
-                
-                <a href="#benefits" className="inline-flex items-center justify-center gap-2 px-6 py-4 border border-purple-200 bg-white rounded-xl text-purple-700 font-medium hover:bg-purple-50 transition-colors duration-300">
-                  Explore Benefits
-                  <ArrowRight className="w-5 h-5" />
-                </a>
-              </div>
-              
-              <div className="flex items-center gap-3 text-gray-600">
-                <div className="flex -space-x-2">
-                  {[...Array(4)].map((_, i) => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-gradient-to-br from-purple-400 to-pink-400"></div>
-                  ))}
-                </div>
-                <span className="text-sm">Trusted by <span className="font-semibold">500+</span> businesses worldwide</span>
-              </div>
-            </div>
-            
-            {/* Hero visual */}
-            <div className="lg:w-1/2">
-              <div className="relative">
-                {/* Social Media Dashboard Mockup */}
-                <div className="relative z-10 bg-white rounded-xl shadow-xl p-4 transform rotate-1 animate-float">
-                  <div className="h-3 w-20 bg-gray-200 rounded-full mb-4"></div>
-                  <div className="grid grid-cols-3 gap-2 mb-4">
-                    <div className="flex flex-col items-center justify-center p-3 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 text-white">
-                      <div className="text-2xl font-bold">2.4K</div>
-                      <div className="text-xs">Followers</div>
-                    </div>
-                    <div className="flex flex-col items-center justify-center p-3 rounded-lg bg-gradient-to-br from-pink-500 to-pink-600 text-white">
-                      <div className="text-2xl font-bold">312</div>
-                      <div className="text-xs">Engagements</div>
-                    </div>
-                    <div className="flex flex-col items-center justify-center p-3 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white">
-                      <div className="text-2xl font-bold">87%</div>
-                      <div className="text-xs">Growth</div>
-                    </div>
-                  </div>
-                  
-                  <div className="h-24 bg-gray-100 rounded-lg mb-4 relative overflow-hidden">
-                    <div className="absolute bottom-0 left-0 h-16 w-full">
-                      <div className="absolute bottom-0 left-0 w-8 h-12 bg-blue-400 rounded-t-md"></div>
-                      <div className="absolute bottom-0 left-10 w-8 h-16 bg-pink-400 rounded-t-md"></div>
-                      <div className="absolute bottom-0 left-20 w-8 h-8 bg-purple-400 rounded-t-md"></div>
-                      <div className="absolute bottom-0 left-30 w-8 h-14 bg-blue-400 rounded-t-md"></div>
-                      <div className="absolute bottom-0 left-40 w-8 h-10 bg-pink-400 rounded-t-md"></div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white">
-                      <TrendingUp size={18} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="h-2.5 bg-gray-200 rounded-full w-3/4 mb-1"></div>
-                      <div className="h-2 bg-gray-200 rounded-full w-1/2"></div>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Platform Icons */}
-                <div className="absolute -top-6 -right-10 bg-blue-500 w-16 h-16 rounded-full flex items-center justify-center shadow-lg animate-bounce" style={{animationDuration: '3s'}}>
-                  <Facebook className="text-white w-8 h-8" />
-                </div>
-                <div className="absolute top-1/4 -right-14 bg-gradient-to-br from-yellow-400 to-pink-500 w-14 h-14 rounded-full flex items-center justify-center shadow-lg animate-bounce" style={{animationDuration: '4s', animationDelay: '0.2s'}}>
-                  <Instagram className="text-white w-7 h-7" />
-                </div>
-                <div className="absolute top-1/2 -right-8 bg-blue-400 w-12 h-12 rounded-full flex items-center justify-center shadow-lg animate-bounce" style={{animationDuration: '3.5s', animationDelay: '0.4s'}}>
-                  <Twitter className="text-white w-6 h-6" />
-                </div>
-                <div className="absolute bottom-1/4 -right-12 bg-blue-700 w-14 h-14 rounded-full flex items-center justify-center shadow-lg animate-bounce" style={{animationDuration: '2.8s', animationDelay: '0.6s'}}>
-                  <Linkedin className="text-white w-7 h-7" />
-                </div>
-                <div className="absolute -bottom-4 -right-4 bg-red-500 w-16 h-16 rounded-full flex items-center justify-center shadow-lg animate-bounce" style={{animationDuration: '3.2s', animationDelay: '0.8s'}}>
-                  <Youtube className="text-white w-8 h-8" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Section removed as requested */}
-      
-      {/* Why Businesses Need It Section - Redesigned */}
-      <section className="py-16 relative overflow-hidden" id="why-businesses-need-it">
-        {/* Animated background elements */}
+      <section className="pt-20 pb-32 relative overflow-hidden" ref={heroRef}>
+        {/* Background Design Elements */}
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-bl-full opacity-70 filter blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-pink-50 to-purple-100 rounded-tr-full opacity-70 filter blur-3xl"></div>
+        
+        {/* Animated Social Media Icons Background */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float" style={{animationDuration: '15s'}}></div>
-          <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float" style={{animationDuration: '18s', animationDelay: '2s'}}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float" style={{animationDuration: '20s', animationDelay: '1s'}}></div>
+          <div className="social-icon-float instagram-float absolute top-1/4 left-1/5 animate-float">
+            <Instagram className="w-10 h-10 text-pink-400 opacity-20" />
+          </div>
+          <div className="social-icon-float facebook-float absolute top-1/3 right-1/4 animate-float-delay-1">
+            <Facebook className="w-10 h-10 text-blue-500 opacity-20" />
+          </div>
+          <div className="social-icon-float twitter-float absolute bottom-1/4 left-1/3 animate-float-delay-2">
+            <Twitter className="w-10 h-10 text-blue-400 opacity-20" />
+          </div>
+          <div className="social-icon-float linkedin-float absolute bottom-1/3 right-1/5 animate-float-delay-3">
+            <Linkedin className="w-10 h-10 text-blue-700 opacity-20" />
+          </div>
         </div>
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center mb-10">
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-medium mb-6 shadow-md animate-pulse-slow">
-              <span className="mr-1">✨</span> Why Businesses Need It
-            </div>
-            
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 bg-clip-text text-transparent inline-block">Power Up Your Brand's Social Presence</span>
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">Strategic social media marketing is no longer optional - it's essential for business growth in the digital age</p>
-          </div>
-          
-          {/* Interactive Hexagon Grid Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
-            {[
-              {
-                icon: <Users className="w-6 h-6" />,
-                title: "Meet Your Audience",
-                description: "Your audience spends hours a day on social platforms—meet them there.",
-                color: "blue",
-                gradient: "from-blue-400 to-indigo-600",
-                delay: 0
-              },
-              {
-                icon: <Award className="w-6 h-6" />,
-                title: "Build Trust",
-                description: "Develop credibility at scale through consistent quality content.",
-                color: "purple",
-                gradient: "from-purple-500 to-indigo-600",
-                delay: 0.1
-              },
-              {
-                icon: <TrendingUp className="w-6 h-6" />,
-                title: "Drive Traffic & Sales",
-                description: "Channel social engagement into website traffic and conversions.",
-                color: "pink",
-                gradient: "from-pink-500 to-rose-600",
-                delay: 0.2
-              },
-              {
-                icon: <ShoppingBag className="w-6 h-6" />,
-                title: "Influence Decisions",
-                description: "Shape purchase decisions through content and social proof.",
-                color: "indigo",
-                gradient: "from-indigo-500 to-blue-600",
-                delay: 0.3
-              },
-              {
-                icon: <Eye className="w-6 h-6" />,
-                title: "Stay Top Of Mind",
-                description: "Keep your brand relevant with consistent, engaging presence.",
-                color: "fuchsia",
-                gradient: "from-fuchsia-500 to-purple-600",
-                delay: 0.4
-              },
-              {
-                icon: <MessageCircle className="w-6 h-6" />,
-                title: "Enhance Support",
-                description: "Provide responsive customer service through social channels.",
-                color: "cyan",
-                gradient: "from-cyan-500 to-blue-600",
-                delay: 0.5
-              }
-            ].map((item, index) => (
-              <div 
-                key={index}
-                className="group relative animate-fade-in bg-white/80 backdrop-blur-sm rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 hover:border-transparent overflow-hidden"
-                style={{animationDelay: `${item.delay}s`}}
-              >
-                {/* Interactive gradient background that appears on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-10 transition-all duration-500`}></div>
-                
-                {/* Floating animated shapes */}
-                <div className={`absolute -bottom-8 -right-8 w-36 h-36 bg-gradient-to-br from-${item.color}-100 to-${item.color}-200 rounded-full opacity-0 group-hover:opacity-70 transition-all duration-700 transform group-hover:scale-125`}></div>
-                
-                <div className="relative z-10 flex items-start gap-4">
-                  {/* Icon with animated gradient background */}
-                  <div className="relative">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} rounded-lg blur-sm opacity-20 group-hover:opacity-100 transition-all duration-500 group-hover:scale-125`}></div>
-                    <div className={`relative w-12 h-12 flex items-center justify-center bg-gradient-to-br ${item.gradient} text-white rounded-lg shadow-md group-hover:shadow-lg transition-all duration-500 group-hover:scale-110 animate-pulse-subtle`}>
-                      {item.icon}
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1">
-                    {/* Title with animated underline on hover */}
-                    <h3 className={`text-lg font-bold mb-1 group-hover:text-${item.color}-600 transition-colors duration-300`}>
-                      {item.title}
-                      <div className={`h-0.5 w-0 group-hover:w-full bg-gradient-to-r ${item.gradient} transition-all duration-500 mt-1 rounded-full`}></div>
-                    </h3>
-                    
-                    {/* Description with subtle color change on hover */}
-                    <p className="text-gray-600 text-sm group-hover:text-gray-800 transition-colors duration-300">{item.description}</p>
-                  </div>
-                </div>
-                
-                {/* Interactive button that appears on hover */}
-                <div className={`mt-3 flex items-center text-sm font-medium text-${item.color}-600 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0`}>
-                  <span className="mr-1">Learn more</span>
-                  <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform duration-300" />
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          {/* Animated stats row */}
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 px-5 py-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg max-w-4xl mx-auto border border-gray-100">
-            {[
-              { value: "3.2B+", label: "Social Media Users", icon: <Globe className="w-5 h-5" />, color: "blue", gradient: "from-blue-400 to-indigo-600" },
-              { value: "6.7h", label: "Daily Usage", icon: <Clock className="w-5 h-5" />, color: "purple", gradient: "from-purple-500 to-indigo-600" },
-              { value: "70%", label: "Research Products", icon: <Search className="w-5 h-5" />, color: "pink", gradient: "from-pink-500 to-rose-600" },
-              { value: "54%", label: "Purchase Via Social", icon: <DollarSign className="w-5 h-5" />, color: "cyan", gradient: "from-cyan-500 to-blue-600" }
-            ].map((stat, index) => (
-              <div key={index} className="text-center group">
-                <div className={`inline-flex items-center justify-center mb-2 bg-gradient-to-br ${stat.gradient} text-white p-2 rounded-lg w-10 h-10 group-hover:scale-110 transition-transform duration-300 shadow-sm`}>
-                  {stat.icon}
-                </div>
-                <div className={`text-xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent animate-count-up`}>
-                  {stat.value}
-                </div>
-                <div className="text-xs text-gray-500 font-medium">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      
-      {/* AI-Enhanced Social Media Section - Redesigned */}
-      <section className="py-14 bg-gradient-to-r from-gray-50 to-slate-100" id="ai-features">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center mb-10">
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-sm font-medium mb-4 shadow-sm">
-              <span className="mr-1">✨</span> AI-Powered Solutions
-            </div>
-            
-            <h2 className="text-2xl md:text-3xl font-bold mb-3">
-              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">Supercharge Your Strategy With AI</span>
-            </h2>
-            
-            <p className="text-gray-600 text-sm md:text-base">
-              Our custom AI agents enhance every aspect of your social media presence
-            </p>
-          </div>
-          
-          {/* Compact AI Features Grid with Animated Icons - Fixed spacing for consistent display */}
-          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
-            {[
-              {
-                icon: <Target className="w-5 h-5 stroke-[2.5]" />,
-                title: "Content Optimization",
-                description: "Suggest best times and formats for higher engagement",
-                color: "blue",
-                gradient: "from-blue-400 to-indigo-500",
-                animation: "pulse"
-              },
-              {
-                icon: <Hash className="w-5 h-5 stroke-[2.5]" />,
-                title: "Caption & Hashtag Gen",
-                description: "Generate viral hashtags tailored to your brand voice",
-                color: "purple",
-                gradient: "from-purple-400 to-indigo-500",
-                animation: "bounce"
-              },
-              {
-                icon: <Bot className="w-5 h-5 stroke-[2.5]" />,
-                title: "Social Media Manager",
-                description: "Create and schedule posts with minimal intervention",
-                color: "indigo",
-                gradient: "from-indigo-400 to-blue-500",
-                animation: "pulse"
-              },
-              {
-                icon: <ThumbsUp className="w-5 h-5 stroke-[2.5]" />,
-                title: "Sentiment Analysis",
-                description: "Monitor public mood and engagement in real-time",
-                color: "pink",
-                gradient: "from-pink-400 to-purple-500",
-                animation: "bounce"
-              },
-              {
-                icon: <Search className="w-5 h-5 stroke-[2.5]" />,
-                title: "Social Listening",
-                description: "Track mentions and competitor activity",
-                color: "indigo",
-                gradient: "from-indigo-400 to-purple-500",
-                animation: "pulse"
-              },
-              {
-                icon: <BarChart2 className="w-5 h-5 stroke-[2.5]" />,
-                title: "Performance Predictor",
-                description: "Forecast content performance before posting",
-                color: "cyan",
-                gradient: "from-cyan-400 to-blue-500",
-                animation: "bounce"
-              }
-            ].map((feature, index) => (
-              <div 
-                key={index} 
-                className="group relative bg-white rounded-xl p-5 border border-gray-100 hover:border-transparent hover:shadow-lg transition-all duration-300 overflow-visible hover:scale-105"
-              >
-                {/* Hover effect with gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
-                
-                <div className="flex items-start gap-3">
-                  {/* Icon with animated background - Fixed to prevent display issues */}
-                  <div className="relative flex-shrink-0 w-11 h-11 flex items-center justify-center">
-                    <div className={`absolute inset-0.5 bg-gradient-to-br ${feature.gradient} rounded-full blur-sm opacity-30 group-hover:opacity-70 group-hover:scale-110 transition-all duration-500 z-0`}></div>
-                    <div className={`absolute inset-0 rounded-full z-10`}></div>
-                    <div className={`relative z-20 w-10 h-10 flex items-center justify-center bg-gradient-to-r ${feature.gradient} text-white rounded-full shadow-md group-hover:shadow-lg transition-all duration-300`}>
-                      {feature.icon}
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1">
-                    {/* Title with animated underline on hover - Fixed animation */}
-                    <h3 className={`text-sm font-bold mb-1 group-hover:text-${feature.color}-600 transition-colors duration-300`}>
-                      {feature.title}
-                      <div className="relative h-0.5 w-full mt-0.5 overflow-hidden">
-                        <div className={`absolute left-0 top-0 h-full w-0 group-hover:w-full bg-gradient-to-r ${feature.gradient} transition-all duration-500 rounded-full`}></div>
-                      </div>
-                    </h3>
-                    
-                    {/* Description with smaller text for space efficiency */}
-                    <p className="text-xs text-gray-500 leading-tight">{feature.description}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          {/* Added interactive CTA button */}
-          <div className="mt-8 text-center">
-            <button className="group relative inline-flex items-center gap-1 px-5 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-sm font-medium rounded-full shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
-              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-              <span>Explore AI Solutions</span>
-              <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" />
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* How We Deliver Results Section */}
-      <section className="py-20 bg-purple-50" id="how-we-deliver">
-        <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-purple-100 text-purple-600 text-sm font-medium mb-6">
-              <span className="mr-1">⚙️</span> How We Deliver Results
-            </div>
-            
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 bg-clip-text text-transparent">Our Process for Social Success</span>
-            </h2>
-          </div>
-          
-          {/* Process Steps */}
-          <div className="max-w-5xl mx-auto">
-            <div className="relative">
-              {/* Process Connection Line */}
-              <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-400 via-pink-400 to-blue-400 transform -translate-x-1/2 hidden md:block"></div>
-              
-              {[
-                {
-                  icon: <Search className="w-8 h-8" />,
-                  title: "Audit & Strategy",
-                  description: "We analyze your current presence and design a data-driven content + growth strategy tailored to your business goals.",
-                  highlight: "Comprehensive analysis of your current social media performance"
-                },
-                {
-                  icon: <MessageCircle className="w-8 h-8" />,
-                  title: "Content Creation",
-                  description: "We create posts, videos, carousels, captions, hashtags, and stories that align with your brand and resonate with your audience.",
-                  highlight: "Eye-catching visuals that stop the scroll"
-                },
-                {
-                  icon: <Calendar className="w-8 h-8" />,
-                  title: "Scheduling & Automation",
-                  description: "We schedule content using smart timing for each platform to ensure maximum visibility and engagement.",
-                  highlight: "Consistent posting with optimal timing"
-                },
-                {
-                  icon: <Users className="w-8 h-8" />,
-                  title: "Community Management",
-                  description: "We monitor comments, DMs, and mentions to engage users, build relationships, and foster loyalty.",
-                  highlight: "Real-time response to audience interactions"
-                },
-                {
-                  icon: <BarChart2 className="w-8 h-8" />,
-                  title: "Analytics & Reporting",
-                  description: "We track KPIs and continually refine our strategy based on performance data and insights.",
-                  highlight: "Data-driven optimization for continuous improvement"
-                }
-              ].map((step, index) => (
-                <div key={index} className="relative z-10 mb-12 md:mb-24 animate-on-scroll" id={`process-step-${index}`}>
-                  <div className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}>
-                    {/* Step Bubble */}
-                    <div className="md:w-1/2 flex justify-center">
-                      <div className={`w-20 h-20 rounded-full flex items-center justify-center bg-white shadow-xl relative ${index % 2 === 0 ? 'md:ml-auto' : 'md:mr-auto'}`}>
-                        <div className="absolute inset-2 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 opacity-20 animate-pulse"></div>
-                        <div className="relative z-10 text-purple-600">
-                          {step.icon}
-                        </div>
-                        <div className="absolute -right-1 -top-1 w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-br from-purple-500 to-pink-500 text-white font-bold text-sm">
-                          {index + 1}
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Step Content */}
-                    <div className="md:w-1/2 bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:border-purple-200 transition-all duration-300 hover:shadow-xl">
-                      <h3 className="text-xl font-bold mb-2 text-purple-600">{step.title}</h3>
-                      <p className="text-gray-600 mb-4">{step.description}</p>
-                      <div className="flex items-center gap-2 text-sm font-medium text-purple-700 bg-purple-50 py-2 px-3 rounded-lg">
-                        <div className="w-4 h-4 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 opacity-70"></div>
-                        {step.highlight}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            {/* Results Banner */}
-            <div className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 rounded-2xl p-8 text-white text-center shadow-lg transform hover:scale-[1.02] transition-transform duration-300 overflow-hidden relative">
-              <div className="absolute top-0 left-0 w-full h-full bg-white opacity-10 transform rotate-45 translate-x-full scale-x-150"></div>
-              <h3 className="text-2xl md:text-3xl font-bold mb-4 relative z-10">Ready to Amplify Your Social Media Impact?</h3>
-              <p className="text-lg mb-6 max-w-2xl mx-auto relative z-10">Let our expert team develop a tailored strategy that gets your brand noticed.</p>
-              <button onClick={handleCTAClick} className="relative overflow-hidden px-8 py-4 bg-white text-purple-600 rounded-xl font-semibold text-lg transition-all duration-300 hover:shadow-lg hover:shadow-purple-700/30 group">
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  Let's Grow Together
-                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center">
+            <div className="lg:w-1/2 mb-12 lg:mb-0">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-on-scroll">
+                <span className="text-gray-900">Elevate Your Brand with</span>
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500">
+                  Social Media Excellence
                 </span>
-              </button>
+              </h1>
+              <p className="text-lg text-gray-600 mb-8 animate-on-scroll" style={{animationDelay: '0.1s'}}>
+                Transform your social media presence with data-driven strategies, captivating content, and engagement-focused campaigns that connect with your audience and deliver measurable results.
+              </p>
+              <div className="flex flex-wrap gap-4 animate-on-scroll" style={{animationDelay: '0.2s'}}>
+                <a href="#contact" className="btn-primary bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-medium transition-all shadow-lg hover:shadow-xl">
+                  Get Started
+                </a>
+                <a href="#why-us" className="btn-secondary border-2 border-gray-200 hover:border-gray-300 px-6 py-3 rounded-lg font-medium transition-all text-gray-700 hover:bg-gray-50">
+                  Learn More
+                </a>
+              </div>
+            </div>
+            
+            <div className="lg:w-1/2 flex justify-center animate-on-scroll" style={{animationDelay: '0.3s'}}>
+              {/* Social Media Dashboard Mockup */}
+              <div className="mockup-container relative w-full max-w-lg">
+                <div className="rounded-xl bg-white shadow-2xl overflow-hidden border border-gray-100 p-4">
+                  {/* Dashboard Header */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h3 className="font-bold text-gray-800">Social Performance</h3>
+                      <p className="text-sm text-gray-500">Monthly Overview</p>
+                    </div>
+                    <div className="flex space-x-2">
+                      <span className="inline-block w-2 h-2 rounded-full bg-red-400"></span>
+                      <span className="inline-block w-2 h-2 rounded-full bg-yellow-400"></span>
+                      <span className="inline-block w-2 h-2 rounded-full bg-green-400"></span>
+                    </div>
+                  </div>
+                  
+                  {/* Engagement Stats */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                    <div className="bg-blue-50 rounded-lg p-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Followers</span>
+                        <Users className="w-4 h-4 text-blue-500" />
+                      </div>
+                      <div className="mt-2 font-bold text-xl text-blue-700">84.7K</div>
+                      <div className="text-xs text-green-600 flex items-center">
+                        <TrendingUp className="w-3 h-3 mr-1" />
+                        12.6%
+                      </div>
+                    </div>
+                    <div className="bg-purple-50 rounded-lg p-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Engagement</span>
+                        <Heart className="w-4 h-4 text-purple-500" />
+                      </div>
+                      <div className="mt-2 font-bold text-xl text-purple-700">5.28%</div>
+                      <div className="text-xs text-green-600 flex items-center">
+                        <TrendingUp className="w-3 h-3 mr-1" />
+                        3.2%
+                      </div>
+                    </div>
+                    <div className="bg-pink-50 rounded-lg p-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Reach</span>
+                        <Users className="w-4 h-4 text-pink-500" />
+                      </div>
+                      <div className="mt-2 font-bold text-xl text-pink-700">125K</div>
+                      <div className="text-xs text-green-600 flex items-center">
+                        <TrendingUp className="w-3 h-3 mr-1" />
+                        24.8%
+                      </div>
+                    </div>
+                    <div className="bg-indigo-50 rounded-lg p-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Clicks</span>
+                        <ArrowRight className="w-4 h-4 text-indigo-500" />
+                      </div>
+                      <div className="mt-2 font-bold text-xl text-indigo-700">12.9K</div>
+                      <div className="text-xs text-green-600 flex items-center">
+                        <TrendingUp className="w-3 h-3 mr-1" />
+                        18.3%
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Graph Visualization */}
+                  <div className="rounded-lg bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-5 mb-5">
+                    <div className="h-24 flex items-end justify-between space-x-2">
+                      <div className="w-1/12 h-4/6 bg-white opacity-40 rounded"></div>
+                      <div className="w-1/12 h-2/6 bg-white opacity-40 rounded"></div>
+                      <div className="w-1/12 h-5/6 bg-white opacity-40 rounded"></div>
+                      <div className="w-1/12 h-3/6 bg-white opacity-40 rounded"></div>
+                      <div className="w-1/12 h-4/6 bg-white opacity-40 rounded"></div>
+                      <div className="w-1/12 h-full bg-white opacity-80 rounded"></div>
+                      <div className="w-1/12 h-5/6 bg-white opacity-40 rounded"></div>
+                      <div className="w-1/12 h-4/6 bg-white opacity-40 rounded"></div>
+                      <div className="w-1/12 h-3/6 bg-white opacity-40 rounded"></div>
+                      <div className="w-1/12 h-5/6 bg-white opacity-40 rounded"></div>
+                      <div className="w-1/12 h-4/6 bg-white opacity-40 rounded"></div>
+                      <div className="w-1/12 h-2/6 bg-white opacity-40 rounded"></div>
+                    </div>
+                    <div className="flex justify-between mt-2">
+                      <span className="text-xs text-white opacity-70">Jun</span>
+                      <span className="text-xs text-white opacity-70">Jul</span>
+                      <span className="text-xs text-white font-medium">Aug</span>
+                      <span className="text-xs text-white opacity-70">Sep</span>
+                    </div>
+                  </div>
+                  
+                  {/* Recent Posts */}
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-semibold text-gray-700">Recent Posts</h4>
+                    <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50">
+                      <div className="w-10 h-10 rounded bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center text-white">
+                        <Facebook className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-xs text-gray-600 truncate">New product launch - Coming this fall!</p>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <div className="flex items-center space-x-1 text-pink-500">
+                            <Heart className="w-3 h-3" />
+                            <span className="text-xs">428</span>
+                          </div>
+                          <div className="flex items-center space-x-1 text-blue-500">
+                            <MessageCircle className="w-3 h-3" />
+                            <span className="text-xs">86</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Why Choose Us Section */}
+      <section className="py-20 relative overflow-hidden" id="why-us" ref={whyChooseUsRef}>
+        {/* Background Design Elements */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-blue-50 to-blue-100 rounded-tr-full opacity-30 filter blur-3xl"></div>
+          <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-bl from-pink-50 to-purple-100 rounded-bl-full opacity-30 filter blur-3xl"></div>
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Social Media Services</span></h2>
+            <p className="text-lg text-gray-600">Our team of social media experts delivers results-driven strategies that enhance brand visibility, engagement, and conversions.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+            {/* Advantage Card 1 */}
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 animate-on-scroll feature-item" id="advantage-1" style={{animationDelay: '0s'}}>
+              <div className="flex flex-col">
+                {/* Image on top */}
+                <div className="mb-5 rounded-lg overflow-hidden h-44">
+                  <img 
+                    src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                    alt="Strategic Content Planning" 
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                
+                <div className="w-16 h-16 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
+                  <Target className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Strategic Content Planning</h3>
+                <p className="text-gray-600">We craft tailored content strategies that resonate with your target audience and align with your business objectives, ensuring every post drives engagement.</p>
+              </div>
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <div className="flex items-center gap-2 text-blue-600">
+                  <CheckCircle className="w-4 h-4" />
+                  <span className="text-sm">Platform-specific content</span>
+                </div>
+                <div className="flex items-center gap-2 text-blue-600 mt-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span className="text-sm">Content calendars</span>
+                </div>
+                <div className="flex items-center gap-2 text-blue-600 mt-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span className="text-sm">Trend analysis</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Advantage Card 2 */}
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 animate-on-scroll feature-item" id="advantage-2" style={{animationDelay: '0.2s'}}>
+              <div className="flex flex-col">
+                {/* Image on top */}
+                <div className="mb-5 rounded-lg overflow-hidden h-44">
+                  <img 
+                    src="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                    alt="Engagement-Focused Campaigns" 
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                
+                <div className="w-16 h-16 rounded-lg bg-purple-100 flex items-center justify-center mb-4">
+                  <BarChart2 className="w-8 h-8 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Engagement-Focused Campaigns</h3>
+                <p className="text-gray-600">We design campaigns that spark conversations, drive shares, and create meaningful connections with your audience across all social platforms.</p>
+              </div>
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <div className="flex items-center gap-2 text-purple-600">
+                  <CheckCircle className="w-4 h-4" />
+                  <span className="text-sm">Community management</span>
+                </div>
+                <div className="flex items-center gap-2 text-purple-600 mt-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span className="text-sm">Interactive content</span>
+                </div>
+                <div className="flex items-center gap-2 text-purple-600 mt-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span className="text-sm">Audience growth tactics</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Advantage Card 3 */}
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 animate-on-scroll feature-item" id="advantage-3" style={{animationDelay: '0.4s'}}>
+              <div className="flex flex-col">
+                {/* Image on top */}
+                <div className="mb-5 rounded-lg overflow-hidden h-44">
+                  <img 
+                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                    alt="Data-Driven Analytics" 
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                
+                <div className="w-16 h-16 rounded-lg bg-pink-100 flex items-center justify-center mb-4">
+                  <PieChart className="w-8 h-8 text-pink-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Data-Driven Analytics</h3>
+                <p className="text-gray-600">We continuously analyze performance metrics to refine strategies, optimize content, and ensure maximum ROI for your social media investment.</p>
+              </div>
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <div className="flex items-center gap-2 text-pink-600">
+                  <CheckCircle className="w-4 h-4" />
+                  <span className="text-sm">Performance reporting</span>
+                </div>
+                <div className="flex items-center gap-2 text-pink-600 mt-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span className="text-sm">Competitor analysis</span>
+                </div>
+                <div className="flex items-center gap-2 text-pink-600 mt-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span className="text-sm">ROI measurement</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="py-20 bg-white" id="benefits">
-        <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-purple-100 text-purple-600 text-sm font-medium mb-6">
-              <span className="mr-1">🚀</span> Benefits of Social Media Marketing
-            </div>
-            
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 bg-clip-text text-transparent">Transform Your Online Presence</span>
-            </h2>
+      {/* Results & Stats Section */}
+      <section className="py-12 relative overflow-hidden" ref={statsRef}>
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1579869847514-7c1a19d2d2ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+            alt="Social Media Results Background" 
+            className="w-full h-full object-cover" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-purple-900/90"></div>
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-8 animate-on-scroll" id="results-title">
+            <h2 className="text-2xl md:text-3xl font-bold mb-2 text-white">Delivering <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Measurable Results</span></h2>
+            <p className="text-sm md:text-base text-white/80">Our strategic approach has helped businesses achieve significant growth through effective social media campaigns</p>
           </div>
           
-          {/* Benefits Grid with Animated Icons */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
-            {[
-              {
-                icon: <Eye className="w-8 h-8" />,
-                title: "Boost Brand Visibility",
-                description: "Increase awareness and recognition across platforms",
-                color: "purple",
-                animation: "pulse"
-              },
-              {
-                icon: <Users className="w-8 h-8" />,
-                title: "Build Loyal Audience",
-                description: "Create an engaged community of brand advocates",
-                color: "pink",
-                animation: "bounce"
-              },
-              {
-                icon: <TrendingUp className="w-8 h-8" />,
-                title: "Drive Website Traffic",
-                description: "Channel social followers to your website or store",
-                color: "blue",
-                animation: "pulse"
-              },
-              {
-                icon: <Target className="w-8 h-8" />,
-                title: "Increase Conversions",
-                description: "Turn followers into leads and customers",
-                color: "purple",
-                animation: "bounce"
-              },
-              {
-                icon: <Award className="w-8 h-8" />,
-                title: "Stay Ahead of Competitors",
-                description: "Differentiate with creative campaigns",
-                color: "pink",
-                animation: "pulse"
-              },
-              {
-                icon: <Clock className="w-8 h-8" />,
-                title: "Save Time & Resources",
-                description: "Efficient management and automation tools",
-                color: "blue",
-                animation: "bounce"
-              },
-              {
-                icon: <BarChart2 className="w-8 h-8" />,
-                title: "Get Performance Insights",
-                description: "Clear analytics and ROI tracking",
-                color: "purple",
-                animation: "pulse"
-              },
-              {
-                icon: <Heart className="w-8 h-8" />,
-                title: "Build Brand Loyalty",
-                description: "Create deeper connections with your audience",
-                color: "pink",
-                animation: "bounce"
-              }
-            ].map((benefit, index) => (
-              <div key={index} className="animate-on-scroll" id={`benefit-item-${index}`}>
-                <div className="flex items-start gap-4 group hover:-translate-y-1 transition-transform duration-300">
-                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br from-${benefit.color}-500 to-${benefit.color}-600 text-white shadow-md group-hover:shadow-lg transition-all duration-300 animate-${benefit.animation}`} style={{animationDuration: '3s'}}>
-                    {benefit.icon}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            {/* Stat Counter 1 */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20 text-center glow-effect animate-on-scroll" id="stat-1">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                {countersStarted ? (
+                  <span className="counter-animate is-visible">3.2x</span>
+                ) : (
+                  <span>3.2x</span>
+                )}
+              </div>
+              <p className="text-blue-200 uppercase tracking-wider text-xs font-semibold">Engagement Increase</p>
+              <div className="w-10 h-1 bg-gradient-to-r from-blue-400 to-blue-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+            
+            {/* Stat Counter 2 */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20 text-center glow-effect animate-on-scroll" id="stat-2" style={{animationDelay: '0.1s'}}>
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                {countersStarted ? (
+                  <span className="counter-animate is-visible">167%</span>
+                ) : (
+                  <span>167%</span>
+                )}
+              </div>
+              <p className="text-purple-200 uppercase tracking-wider text-xs font-semibold">Follower Growth</p>
+              <div className="w-10 h-1 bg-gradient-to-r from-purple-400 to-purple-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+            
+            {/* Stat Counter 3 */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20 text-center glow-effect animate-on-scroll" id="stat-3" style={{animationDelay: '0.2s'}}>
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                {countersStarted ? (
+                  <span className="counter-animate is-visible">214%</span>
+                ) : (
+                  <span>214%</span>
+                )}
+              </div>
+              <p className="text-pink-200 uppercase tracking-wider text-xs font-semibold">Website Traffic</p>
+              <div className="w-10 h-1 bg-gradient-to-r from-pink-400 to-pink-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+            
+            {/* Stat Counter 4 */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20 text-center glow-effect animate-on-scroll" id="stat-4" style={{animationDelay: '0.3s'}}>
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                {countersStarted ? (
+                  <span className="counter-animate is-visible">42%</span>
+                ) : (
+                  <span>42%</span>
+                )}
+              </div>
+              <p className="text-indigo-200 uppercase tracking-wider text-xs font-semibold">Conversion Rate</p>
+              <div className="w-10 h-1 bg-gradient-to-r from-indigo-400 to-indigo-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+          </div>
+          
+          {/* Client Success Story */}
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-white/10 backdrop-blur-lg rounded-xl overflow-hidden border border-white/20 animate-on-scroll" style={{animationDelay: '0.4s'}}>
+              <div className="p-3 md:p-4">
+                <div className="flex flex-col">
+                  <div className="mb-3">
+                    <div className="flex mb-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <svg key={star} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                          <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <p className="text-sm text-white italic">"Their social media team transformed our online presence completely. We've seen a dramatic increase in engagement and conversions. The ROI exceeded our expectations."</p>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <div className="mr-4">
+                      <div className="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-r from-blue-400 to-purple-400 p-[2px]">
+                        <div className="rounded-full overflow-hidden w-full h-full bg-blue-800">
+                          <img 
+                            src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                            alt="Client Portrait" 
+                            className="w-full h-full object-cover" 
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white">Sarah Johnson</h4>
+                      <p className="text-blue-200 text-sm">Marketing Director, TechVision Inc.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Results Display */}
+              <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-3 md:p-4">
+                <h4 className="font-bold text-white mb-3 text-sm">Campaign Results</h4>
+                <div className="grid grid-cols-3 gap-2">
+                  <div>
+                    <div className="flex justify-between mb-1">
+                      <span className="text-sm text-blue-200">Engagement Rate</span>
+                      <span className="text-sm font-medium text-white">8.4%</span>
+                    </div>
+                    <div className="w-full bg-blue-900/50 rounded-full h-2.5">
+                      <div className="bg-gradient-to-r from-blue-400 to-blue-500 h-2.5 rounded-full" style={{ width: '84%' }}></div>
+                    </div>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold mb-1 group-hover:text-purple-600 transition-colors duration-300">{benefit.title}</h3>
-                    <p className="text-gray-600">{benefit.description}</p>
+                    <div className="flex justify-between mb-1">
+                      <span className="text-sm text-purple-200">Lead Generation</span>
+                      <span className="text-sm font-medium text-white">92%</span>
+                    </div>
+                    <div className="w-full bg-purple-900/50 rounded-full h-2.5">
+                      <div className="bg-gradient-to-r from-purple-400 to-purple-500 h-2.5 rounded-full" style={{ width: '92%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between mb-1">
+                      <span className="text-sm text-pink-200">Brand Awareness</span>
+                      <span className="text-sm font-medium text-white">76%</span>
+                    </div>
+                    <div className="w-full bg-pink-900/50 rounded-full h-2.5">
+                      <div className="bg-gradient-to-r from-pink-400 to-pink-500 h-2.5 rounded-full" style={{ width: '76%' }}></div>
+                    </div>
                   </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
-      
-      {/* Use Cases Section */}
-      <section className="py-20 bg-gradient-to-b from-white to-purple-50" id="use-cases">
-        <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-purple-100 text-purple-600 text-sm font-medium mb-6">
-              <span className="mr-1">📌</span> Use Cases
-            </div>
-            
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 bg-clip-text text-transparent">Perfect For Any Industry</span>
-            </h2>
+
+      {/* Pricing Section */}
+      <section className="py-24 relative overflow-hidden" id="pricing" ref={pricingRef}>
+        {/* Background Design Elements */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" 
+            alt="Pricing Background" 
+            className="w-full h-full object-cover opacity-10" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-blue-50 to-white"></div>
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Social Media Package</span></h2>
+            <p className="text-lg text-gray-600">Flexible packages designed to meet your specific business needs and growth objectives</p>
           </div>
           
-          {/* Tabs Interface */}
-          <div className="max-w-4xl mx-auto mb-20">
-            <div className="flex overflow-x-auto pb-4 mb-6 gap-2 justify-center no-scrollbar">
-              {[
-                { id: 0, label: "Startups", icon: <Zap className="w-4 h-4" /> },
-                { id: 1, label: "E-commerce", icon: <ShoppingBag className="w-4 h-4" /> },
-                { id: 2, label: "Service Providers", icon: <Briefcase className="w-4 h-4" /> },
-                { id: 3, label: "Corporate Brands", icon: <Building className="w-4 h-4" /> }
-              ].map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`relative flex items-center gap-2 px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all duration-300 ${activeTab === tab.id 
-                    ? 'bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white shadow-md'
-                    : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'}`}
-                >
-                  {tab.icon}
-                  {tab.label}
-                </button>
-              ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+            {/* Basic Package */}
+            <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden animate-on-scroll pricing-card" style={{animationDelay: '0s'}}>
+              <div className="p-8">
+                <div className="pb-8">
+                  <h3 className="text-2xl font-bold mb-2 text-gray-900">Basic Package</h3>
+                  <div className="flex items-baseline">
+                    <span className="text-3xl font-bold text-gray-900">KES 20,000</span>
+                    <span className="text-gray-500 ml-2">/month</span>
+                  </div>
+                  <p className="text-gray-500 mt-4">Perfect for small businesses looking to establish a social media presence</p>
+                </div>
+                
+                <div className="border-t border-gray-100 pt-6">
+                  <ul className="space-y-4">
+                    <li className="flex items-center">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-600 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span>Social Media Strategy</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-600 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span>Content Creation (10 posts/month)</span>
+                    </li>
+                    <li className="flex items-center text-gray-400">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-gray-100 text-gray-400 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span>Paid Social Media Advertising</span>
+                    </li>
+                    <li className="flex items-center text-gray-400">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-gray-100 text-gray-400 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span>Analytics and Reporting</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div className="p-6 bg-gray-50 border-t border-gray-100">
+                <a href="#contact" className="block w-full py-3 px-4 text-center font-medium bg-white border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
+                  Get Started
+                </a>
+              </div>
             </div>
             
-            {/* Tab Content */}
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-500">
-              {activeTab === 0 && (
-                <div className="p-8 animate-fade-in">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 text-white flex items-center justify-center shadow-lg">
-                      <TrendingUp className="w-8 h-8" />
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-800">Startups & Product Launches</h3>
-                      <p className="text-gray-600">Generate hype, awareness, and email signups before launching.</p>
-                    </div>
+            {/* Standard Package */}
+            <div className="bg-white rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden relative animate-on-scroll pricing-card" style={{animationDelay: '0.2s'}}>
+              <div className="absolute top-0 inset-x-0 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-semibold py-1 text-center">
+                MOST POPULAR
+              </div>
+              <div className="p-8 pt-10">
+                <div className="pb-8">
+                  <h3 className="text-2xl font-bold mb-2 text-gray-900">Standard Package</h3>
+                  <div className="flex items-baseline">
+                    <span className="text-3xl font-bold text-gray-900">KES 40,000</span>
+                    <span className="text-gray-500 ml-2">/month</span>
                   </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-6 mt-8">
-                    <div className="bg-purple-50 p-5 rounded-xl">
-                      <h4 className="font-bold mb-3 text-purple-700">Pre-Launch Strategy</h4>
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
-                          <span>Build anticipation with countdown posts and teasers</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
-                          <span>Collect emails through engaging lead magnets</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
-                          <span>Early-access promotions and waitlists</span>
-                        </li>
-                      </ul>
-                    </div>
-                    
-                    <div className="bg-pink-50 p-5 rounded-xl">
-                      <h4 className="font-bold mb-3 text-pink-700">Launch & Beyond</h4>
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-pink-600 flex-shrink-0 mt-0.5" />
-                          <span>Coordinated launch announcements across platforms</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-pink-600 flex-shrink-0 mt-0.5" />
-                          <span>Highlight early adopter testimonials and success stories</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-pink-600 flex-shrink-0 mt-0.5" />
-                          <span>Investor-targeted content for further funding rounds</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                  <p className="text-gray-500 mt-4">Ideal for growing businesses seeking enhanced engagement and visibility</p>
                 </div>
-              )}
+                
+                <div className="border-t border-gray-100 pt-6">
+                  <ul className="space-y-4">
+                    <li className="flex items-center">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-600 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span>Social Media Strategy</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-600 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span>Content Creation (20 posts/month)</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-600 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span>Paid Social Media Advertising</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-600 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span className="text-xs">(Ad spend not included)</span>
+                    </li>
+                    <li className="flex items-center text-gray-400">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-gray-100 text-gray-400 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span>Analytics and Reporting</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
               
-              {activeTab === 1 && (
-                <div className="p-8 animate-fade-in">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white flex items-center justify-center shadow-lg">
-                      <ShoppingBag className="w-8 h-8" />
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-800">E-commerce Brands</h3>
-                      <p className="text-gray-600">Promote products, run campaigns, and retarget potential customers.</p>
-                    </div>
+              <div className="p-6 bg-gray-50 border-t border-gray-100">
+                <a href="#contact" className="block w-full py-3 px-4 text-center font-medium bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all">
+                  Get Started
+                </a>
+              </div>
+            </div>
+            
+            {/* Premium Package */}
+            <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden animate-on-scroll pricing-card" style={{animationDelay: '0.4s'}}>
+              <div className="p-8">
+                <div className="pb-8">
+                  <h3 className="text-2xl font-bold mb-2 text-gray-900">Premium Package</h3>
+                  <div className="flex items-baseline">
+                    <span className="text-3xl font-bold text-gray-900">KES 60,000</span>
+                    <span className="text-gray-500 ml-2">/month</span>
                   </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-6 mt-8">
-                    <div className="bg-blue-50 p-5 rounded-xl">
-                      <h4 className="font-bold mb-3 text-blue-700">Product Showcase</h4>
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                          <span>Highlight new arrivals with visually stunning content</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                          <span>Create shoppable posts with direct product links</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                          <span>Showcase products in real-life scenarios</span>
-                        </li>
-                      </ul>
-                    </div>
-                    
-                    <div className="bg-cyan-50 p-5 rounded-xl">
-                      <h4 className="font-bold mb-3 text-cyan-700">Conversion Tactics</h4>
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-cyan-600 flex-shrink-0 mt-0.5" />
-                          <span>Time-sensitive promotions and flash sales</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-cyan-600 flex-shrink-0 mt-0.5" />
-                          <span>Retarget cart abandoners with personalized ads</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-cyan-600 flex-shrink-0 mt-0.5" />
-                          <span>Customer testimonials and user-generated content</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                  <p className="text-gray-500 mt-4">Comprehensive solution for businesses serious about social media dominance</p>
                 </div>
-              )}
+                
+                <div className="border-t border-gray-100 pt-6">
+                  <ul className="space-y-4">
+                    <li className="flex items-center">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-600 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span>Social Media Strategy</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-600 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span>Content Creation (30 posts/month)</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-600 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span>Paid Social Media Advertising</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-600 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span className="text-xs">(Ad spend not included)</span>
+                    </li>
+                    <li className="flex items-center">
+                      <span className="mr-3 inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-600 rounded-full">
+                        <CheckCircle className="w-3 h-3" />
+                      </span>
+                      <span>Advanced Analytics and Reporting</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
               
-              {activeTab === 2 && (
-                <div className="p-8 animate-fade-in">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 text-white flex items-center justify-center shadow-lg">
-                      <Briefcase className="w-8 h-8" />
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-800">Service Providers</h3>
-                      <p className="text-gray-600">Build authority through educational content and client success stories.</p>
-                    </div>
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-6 mt-8">
-                    <div className="bg-amber-50 p-5 rounded-xl">
-                      <h4 className="font-bold mb-3 text-amber-700">Authority Building</h4>
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                          <span>Educational content that showcases expertise</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                          <span>Thought leadership articles and industry insights</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                          <span>Service process explanations and FAQs</span>
-                        </li>
-                      </ul>
-                    </div>
-                    
-                    <div className="bg-orange-50 p-5 rounded-xl">
-                      <h4 className="font-bold mb-3 text-orange-700">Social Proof</h4>
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                          <span>Client testimonials and success stories</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                          <span>Behind-the-scenes content of your team at work</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                          <span>Case studies showing transformative results</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              {activeTab === 3 && (
-                <div className="p-8 animate-fade-in">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 text-white flex items-center justify-center shadow-lg">
-                      <Building className="w-8 h-8" />
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-800">Corporate Brands</h3>
-                      <p className="text-gray-600">Strengthen employer branding and showcase company culture.</p>
-                    </div>
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-6 mt-8">
-                    <div className="bg-indigo-50 p-5 rounded-xl">
-                      <h4 className="font-bold mb-3 text-indigo-700">Employer Branding</h4>
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" />
-                          <span>Highlight company culture and team activities</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" />
-                          <span>Employee spotlights and achievement recognition</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" />
-                          <span>Recruitment campaigns and career opportunities</span>
-                        </li>
-                      </ul>
-                    </div>
-                    
-                    <div className="bg-blue-50 p-5 rounded-xl">
-                      <h4 className="font-bold mb-3 text-blue-700">Corporate Communication</h4>
-                      <ul className="space-y-2">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                          <span>Company news and important announcements</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                          <span>CSR initiatives and community involvement</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                          <span>Industry leadership and partnership announcements</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              )}
+              <div className="p-6 bg-gray-50 border-t border-gray-100">
+                <a href="#contact" className="block w-full py-3 px-4 text-center font-medium bg-white border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
+                  Get Started
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </section>
       
-      {/* Call to Action Section */}
-      <section className="py-20 bg-white" id="cta">
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto bg-gradient-to-br from-purple-600 via-pink-500 to-blue-600 rounded-3xl shadow-xl overflow-hidden">
-            <div className="flex flex-col lg:flex-row">
-              <div className="lg:w-3/5 p-10 lg:p-16">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                  Turn Followers Into Fans, and Fans Into Customers
-                </h2>
-                
-                <p className="text-lg text-blue-100 mb-8">
-                  Let our expert team and smart tools elevate your social media game—so your brand stands out and sells more.
-                </p>
-                
-                <button 
-                  onClick={handleCTAClick}
-                  className="relative overflow-hidden px-8 py-4 bg-white text-purple-600 rounded-xl font-semibold text-lg transition-all duration-300 hover:shadow-xl hover:shadow-purple-700/20 group inline-flex items-center gap-2"
-                >
-                  Book Your Free Strategy Session
-                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
-                
-                <p className="mt-6 text-blue-100 flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-300" />
-                  <span>Let's talk about how we'll grow your audience and revenue through social</span>
-                </p>
-              </div>
-              
-              <div className="lg:w-2/5 bg-white/10 backdrop-blur-sm p-10 lg:p-16 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute -bottom-1/3 -right-1/3 w-2/3 h-2/3 bg-white/20 rounded-full blur-3xl"></div>
-                <div className="absolute -top-1/3 -left-1/3 w-2/3 h-2/3 bg-white/10 rounded-full blur-3xl"></div>
-                
-                <div className="relative z-10 w-full max-w-sm bg-white p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform duration-300">
-                  <div className="flex justify-between items-center mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500"></div>
-                      <div>
-                        <div className="font-bold">@yourbrand</div>
-                        <div className="text-xs text-gray-500">2 hours ago</div>
-                      </div>
-                    </div>
-                    <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
-                  </div>
-                  
-                  <div className="h-40 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg mb-4 flex items-center justify-center">
-                    <div className="text-3xl">🚀</div>
-                  </div>
-                  
-                  <div className="space-y-1">
-                    <div className="h-3 w-full bg-gray-200 rounded-full"></div>
-                    <div className="h-3 w-5/6 bg-gray-200 rounded-full"></div>
-                    <div className="h-3 w-4/6 bg-gray-200 rounded-full"></div>
-                  </div>
-                  
-                  <div className="flex justify-between mt-4">
-                    <div className="flex items-center gap-1 text-red-500">
-                      <Heart className="w-5 h-5 fill-red-500" />
-                      <span className="text-xs font-medium">1.2k</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-gray-500">
-                      <MessageCircle className="w-5 h-5" />
-                      <span className="text-xs font-medium">248</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-green-500">
-                      <TrendingUp className="w-5 h-5" />
-                      <span className="text-xs font-medium">+43%</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {/* Final CTA Section */}
+      <section className="py-20 relative overflow-hidden" ref={ctaRef}>
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+            alt="CTA Background" 
+            className="w-full h-full object-cover" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-purple-900/90"></div>
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-4xl mx-auto text-center animate-on-scroll">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Ready to Transform Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Social Media Presence?</span></h2>
+            <p className="text-xl text-white/80 mb-10">Join hundreds of businesses that have elevated their brand with our expert social media services.</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <a href="#contact" className="btn-primary bg-white hover:bg-gray-50 text-blue-900 px-8 py-4 rounded-lg font-medium transition-all shadow-lg hover:shadow-xl text-lg">
+                Start Your Journey Today
+              </a>
+              <a href="#why-us" className="btn-secondary border-2 border-white/30 hover:border-white/50 px-8 py-4 rounded-lg font-medium transition-all text-white hover:bg-white/10 text-lg">
+                Learn More
+              </a>
             </div>
           </div>
         </div>

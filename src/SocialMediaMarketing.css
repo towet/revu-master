@@ -1,0 +1,229 @@
+/* Social Media Marketing Animations & Effects */
+
+/* Base Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideRight {
+  from { transform: translateX(-50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideLeft {
+  from { transform: translateX(50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes floatAnimation {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes rotateIn {
+  from { transform: rotate(-10deg) scale(0.9); opacity: 0; }
+  to { transform: rotate(0) scale(1); opacity: 1; }
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+}
+
+/* Scrolling Animations */
+.animate-on-scroll {
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+}
+
+/* Hero Elements */
+#hero-title.is-visible {
+  animation: slideUp 0.8s ease forwards;
+}
+
+#hero-description.is-visible {
+  animation: fadeIn 0.8s ease 0.3s forwards;
+}
+
+#hero-cta.is-visible {
+  animation: slideUp 0.8s ease 0.5s forwards;
+}
+
+#hero-dashboard.is-visible {
+  animation: scaleUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+}
+
+/* Feature Cards Animation */
+.feature-item {
+  transition: all 0.4s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-5px);
+}
+
+.feature-item.is-visible {
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Stats Animations */
+#stat-1.is-visible {
+  animation: slideUp 0.6s ease forwards;
+}
+
+#stat-2.is-visible {
+  animation: slideUp 0.6s ease 0.1s forwards;
+}
+
+#stat-3.is-visible {
+  animation: slideUp 0.6s ease 0.2s forwards;
+}
+
+#stat-4.is-visible {
+  animation: slideUp 0.6s ease 0.3s forwards;
+}
+
+/* Counter Animation */
+.counter-animate {
+  display: inline-block;
+  opacity: 0;
+}
+
+.counter-animate.is-visible {
+  animation: scaleUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Pricing Cards Animation */
+.pricing-card {
+  transition: all 0.4s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-5px);
+}
+
+.pricing-card.is-visible {
+  animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Floating Social Icons */
+.social-icon-float {
+  opacity: 0.2;
+  transition: all 0.5s ease;
+}
+
+.animate-float {
+  animation: floatAnimation 6s ease-in-out infinite;
+}
+
+.animate-float-delay-1 {
+  animation: floatAnimation 7s ease-in-out 0.5s infinite;
+}
+
+.animate-float-delay-2 {
+  animation: floatAnimation 8s ease-in-out 1s infinite;
+}
+
+.animate-float-delay-3 {
+  animation: floatAnimation 7.5s ease-in-out 1.5s infinite;
+}
+
+/* Glow Effects */
+.glow-effect {
+  transition: all 0.3s ease;
+}
+
+.glow-effect:hover {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .mockup-container {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .pricing-card {
+    margin-bottom: 1.5rem;
+  }
+
+  .social-icon-float {
+    display: none;
+  }
+  
+  #results-title h2 {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .mockup-container {
+    max-width: 100%;
+  }
+  
+  #hero-dashboard.is-visible {
+    animation-delay: 0.3s;
+  }
+  
+  .animate-on-scroll.is-visible {
+    animation-duration: 0.5s;
+  }
+}
+
+/* Enhanced Mobile Menu */
+.mobile-menu {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: all 0.4s ease;
+}
+
+.mobile-menu.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Parallax Scroll Effect */
+.parallax-bg {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
