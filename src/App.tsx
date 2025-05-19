@@ -33,6 +33,7 @@ import youtubeLogo from './assets/socials/icons8-youtube-48.png';
 import googleAdsLogo from './assets/socials/google-ads-logo-vector-115738525038dma6lhprs.png';
 import codeLogo from './assets/socials/icons8-code-48.png';
 import metaLogo from './assets/socials/png-clipart-meta-logo-social-media-icons.png';
+import './pricing-adjustments.css';
 import WebDevelopment from './WebDevelopment';
 import AIDevelopment from './AIDevelopment';
 import CustomAIAgents from './CustomAIAgents';
@@ -41,6 +42,7 @@ import SearchEngineOptimization from './SearchEngineOptimization';
 import DataAnalytics from './DataAnalytics';
 import GraphicDesign from './GraphicDesign';
 import StrategicPaidAdvertising from './StrategicPaidAdvertising';
+import ContactUs from './ContactUs';
 import ScrollToTop from './ScrollToTop';
 
 // Main App component that contains the home page content
@@ -137,7 +139,6 @@ const Home = () => {
                   <span className="relative bg-indigo-500 text-white p-1 rounded-full">
                     <Trophy className="w-3 h-3" />
                   </span>
-                  <span>Award-Winning Digital Agency</span>
                 </div>
               </div>
               
@@ -155,8 +156,8 @@ const Home = () => {
               
               {/* Enhanced CTA buttons */}
               <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-                <button
-                  onClick={() => setShowContact(true)}
+                <Link
+                  to="/contact"
                   className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold 
                            shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:scale-105
                            transition-all duration-300 flex items-center gap-2 group relative overflow-hidden"
@@ -164,7 +165,7 @@ const Home = () => {
                   <span className="relative z-10">Get Started</span>
                   <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300 relative z-10" />
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-20 bg-white transition-opacity duration-300"></div>
-                </button>
+                </Link>
                 
                 <button
                   onClick={() => window.open('#portfolio', '_self')}
@@ -281,12 +282,12 @@ const Home = () => {
               <a href="#" className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 reveal stagger-2">Services</a>
               <a href="#" className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 reveal stagger-3">About</a>
               <a href="#" className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 reveal stagger-4">Portfolio</a>
-              <button 
-                onClick={() => setShowContact(true)}
-                className="px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-indigo-500/30 transition-all duration-300 reveal stagger-5 hover:scale-105"
+              <Link 
+                to="/contact"
+                className="px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-indigo-500/30 transition-all duration-300 reveal stagger-5 hover:scale-105 flex items-center justify-center"
               >
                 Contact Us
-              </button>
+              </Link>
             </div>
             <button className="md:hidden text-gray-700 hover:text-indigo-600 transition-colors duration-300">
               <Menu className="w-6 h-6" />
@@ -1083,8 +1084,8 @@ const Home = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <button 
-                onClick={handleContactClick}
+              <Link 
+                to="/contact"
                 className="bg-white text-indigo-900 hover:text-purple-900 px-8 py-4 rounded-xl text-lg font-semibold 
                          shadow-lg shadow-indigo-800/30 hover:shadow-indigo-700/50
                          transition-all transform hover:scale-105 flex items-center gap-3 group relative overflow-hidden"
@@ -1092,7 +1093,7 @@ const Home = () => {
                 <span className="relative z-10">Get Started</span>
                 <ArrowRight className="w-5 h-5 transform transition-transform group-hover:translate-x-1 relative z-10" />
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-r from-indigo-400 to-purple-400 transition-opacity duration-300"></div>
-              </button>
+              </Link>
               <button 
                 onClick={handleContactClick}
                 className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-xl text-lg font-semibold 
@@ -1137,6 +1138,7 @@ function App() {
         <Route path="/services/data-analytics" element={<DataAnalytics />} />
         <Route path="/services/graphic-design" element={<GraphicDesign />} />
         <Route path="/services/strategic-paid-advertising" element={<StrategicPaidAdvertising />} />
+        <Route path="/contact" element={<ContactUs />} />
       </Routes>
     </Router>
   );

@@ -1103,10 +1103,6 @@ const WebDevelopment: React.FC = () => {
                     <span>Social media integration</span>
                   </li>
                 </ul>
-                <button onClick={handleCTAClick} className="w-full mt-8 py-4 px-6 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-semibold transition-colors duration-300 flex items-center justify-center gap-2">
-                  Get Started
-                  <ArrowRight size={18} />
-                </button>
               </div>
             </div>
             
@@ -1150,10 +1146,6 @@ const WebDevelopment: React.FC = () => {
                     <span>Advanced contact forms</span>
                   </li>
                 </ul>
-                <button onClick={handleCTAClick} className="w-full mt-8 py-4 px-6 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-semibold transition-colors duration-300 flex items-center justify-center gap-2">
-                  Get Started
-                  <ArrowRight size={18} />
-                </button>
               </div>
             </div>
             
@@ -1194,10 +1186,6 @@ const WebDevelopment: React.FC = () => {
                     <span>UI/UX design</span>
                   </li>
                 </ul>
-                <button onClick={handleCTAClick} className="w-full mt-8 py-4 px-6 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-semibold transition-colors duration-300 flex items-center justify-center gap-2">
-                  Get Started
-                  <ArrowRight size={18} />
-                </button>
               </div>
             </div>
           </div>

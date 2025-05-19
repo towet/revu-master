@@ -1,0 +1,15 @@
+/* Hide "Get Started" buttons in pricing cards across all pages */
+.pricing-card .btn-shine,
+.pricing-card button,
+.pricing-card a[href="#contact"],
+div[id*="package"] button,
+[id^="pricing"] a[href="#contact"],
+[id^="pricing"] button {
+  display: none !important;
+}
+
+/* Add padding to the bottom of pricing card content to maintain spacing */
+.pricing-card > div:last-child,
+div[id*="package"] > div:last-child {
+  padding-bottom: 1.5rem;
+}
