@@ -49,6 +49,12 @@ import ScrollToTop from './ScrollToTop';
 const Home = () => {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [showContact, setShowContact] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Add refs for smooth scrolling
+  const servicesRef = useRef<HTMLDivElement>(null);
+  const aboutRef = useRef<HTMLDivElement>(null);
+  const portfolioRef = useRef<HTMLDivElement>(null);
 
   const handleContactClick = () => {
     setIsContactOpen(true);
@@ -67,6 +73,19 @@ const Home = () => {
   const handleEmail = useCallback(() => {
     window.open('mailto:nexuscollective103@gmail.com', '_blank');
   }, []);
+
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // Scroll to section and close menu
+  const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    toggleMobileMenu();
+  };
 
   // Optimize scroll performance
   useEffect(() => {
@@ -107,7 +126,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-white text-gray-800">
       {/* Hero Section - Modern, Interactive, 3D */}
-      <header className="pt-28 pb-24 relative overflow-hidden">
+      <header id="home" className="pt-28 pb-24 relative overflow-hidden">
         {/* Animated background gradient */}
         <div className="absolute inset-0 animated-gradient opacity-10"></div>
         
@@ -262,7 +281,7 @@ const Home = () => {
               
               {/* Enhanced background elements */}
               <div className="absolute -top-6 -right-6 w-32 h-32 bg-indigo-500/20 rounded-full animate-pulse-slow blur-xl"></div>
-              <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-purple-500/20 rounded-full animate-pulse-slow delay-500 blur-xl"></div>
+              <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-purple-500/20 rounded-full animate-pulse-slow delay-700 blur-xl"></div>
               <div className="absolute top-1/2 right-0 w-24 h-24 bg-blue-500/20 rounded-full animate-pulse-slow delay-700 blur-xl"></div>
             </div>
           </div>
@@ -279,9 +298,9 @@ const Home = () => {
             </div>
             <div className="hidden md:flex items-center space-x-8">
               <a href="#" className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 reveal stagger-1">Home</a>
-              <a href="#" className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 reveal stagger-2">Services</a>
-              <a href="#" className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 reveal stagger-3">About</a>
-              <a href="#" className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 reveal stagger-4">Portfolio</a>
+              <a href="#services" className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 reveal stagger-2">Services</a>
+              <a href="#about" className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 reveal stagger-3">About</a>
+              <a href="#portfolio" className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 reveal stagger-4">Portfolio</a>
               <Link 
                 to="/contact"
                 className="px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-indigo-500/30 transition-all duration-300 reveal stagger-5 hover:scale-105 flex items-center justify-center"
@@ -289,19 +308,92 @@ const Home = () => {
                 Contact Us
               </Link>
             </div>
-            <button className="md:hidden text-gray-700 hover:text-indigo-600 transition-colors duration-300">
-              <Menu className="w-6 h-6" />
+            <button 
+              onClick={toggleMobileMenu} 
+              className="md:hidden text-gray-700 hover:text-indigo-600 transition-colors duration-300"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
+        {/* Mobile Menu - Appears on small screens */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4 z-40">
+            <div className="container mx-auto px-6 flex flex-col space-y-4">
+              <a 
+                href="#home" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  const element = document.getElementById('home');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                  toggleMobileMenu();
+                }}
+                className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 py-2 text-center"
+              >
+                Home
+              </a>
+              <a 
+                href="#services" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  const element = document.getElementById('services');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                  toggleMobileMenu();
+                }}
+                className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 py-2 text-center"
+              >
+                Services
+              </a>
+              <a 
+                href="#about" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  const element = document.getElementById('about');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                  toggleMobileMenu();
+                }}
+                className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 py-2 text-center"
+              >
+                About
+              </a>
+              <a 
+                href="#portfolio" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  const element = document.getElementById('portfolio');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                  toggleMobileMenu();
+                }}
+                className="text-gray-700 hover:text-indigo-600 transition-colors duration-300 py-2 text-center"
+              >
+                Portfolio
+              </a>
+              <Link
+                to="/contact"
+                onClick={toggleMobileMenu}
+                className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-indigo-500/30 transition-all duration-300 flex items-center justify-center text-center"
+              >
+                Contact Us
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Contact Popup */}
       {isContactOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl w-full max-w-md p-8 relative transform transition-all duration-300 scale-100 shadow-2xl">
-            <button
-              onClick={() => setShowContact(false)}
+            <button 
+              onClick={() => setIsContactOpen(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
             >
               <X className="w-6 h-6" />
@@ -325,7 +417,7 @@ const Home = () => {
                   </svg>
                 </div>
                 <div className="flex-grow">
-                  <h3 className="text-xl font-semibold text-green-600 mb-1">WhatsApp</h3>
+                  <h3 className="text-xl font-semibold mb-1 text-green-600">WhatsApp</h3>
                   <p className="text-green-700">Chat with us instantly</p>
                 </div>
                 <ArrowRight className="w-6 h-6 text-green-500 group-hover:translate-x-2 transition-transform duration-300" />
@@ -341,7 +433,7 @@ const Home = () => {
                   </svg>
                 </div>
                 <div className="flex-grow">
-                  <h3 className="text-xl font-semibold text-red-600 mb-1">Gmail</h3>
+                  <h3 className="text-xl font-semibold mb-1 text-red-600">Gmail</h3>
                   <p className="text-red-700">Send us an email</p>
                 </div>
                 <ArrowRight className="w-6 h-6 text-red-500 group-hover:translate-x-2 transition-transform duration-300" />
@@ -395,7 +487,7 @@ const Home = () => {
       )}
 
       {/* About Us Section - Modern & Interactive */}
-      <section className="py-24 relative overflow-hidden">
+      <section id="about" className="py-24 relative overflow-hidden">
         {/* Animated background gradients */}
         <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-indigo-500/10 rounded-bl-[100px] transform rotate-6 blur-xl"></div>
         <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-purple-500/10 rounded-tr-[100px] transform -rotate-6 blur-xl"></div>
@@ -472,7 +564,7 @@ const Home = () => {
                              shadow-lg hover:shadow-xl hover:shadow-indigo-500/20 group hover:transform hover:-translate-y-1 tilt-effect"
                     style={{ transitionDelay: `${feature.delay}ms` }}
                   >
-                    <div className="bg-gradient-to-br from-indigo-500 to-purple-600 w-14 h-14 rounded-xl flex items-center justify-center mb-5 shadow-lg
+                    <div className="bg-gradient-to-br from-indigo-500 to-purple-500 w-14 h-14 rounded-xl flex items-center justify-center mb-5 shadow-lg
                                  group-hover:scale-110 transition-all duration-300 overflow-hidden relative">
                       <div className="absolute inset-0 bg-white opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                       <div className="absolute -top-6 -left-6 w-12 h-12 bg-white/10 rounded-full"></div>
@@ -501,7 +593,7 @@ const Home = () => {
                              hover:shadow-lg hover:shadow-indigo-500/20 group"
                     style={{ transitionDelay: `${index * 100}ms` }}
                   >
-                    <div className="bg-gradient-to-br from-indigo-500 to-purple-600 w-16 h-16 rounded-xl flex items-center justify-center shrink-0 shadow-lg
+                    <div className="bg-gradient-to-br from-indigo-500 to-purple-500 w-16 h-16 rounded-xl flex items-center justify-center shrink-0 shadow-lg
                                  group-hover:scale-110 transition-all duration-300 overflow-hidden relative">
                       <div className="absolute inset-0 bg-white opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                       <div className="absolute -top-6 -left-6 w-12 h-12 bg-white/10 rounded-full"></div>
@@ -581,7 +673,8 @@ const Home = () => {
       </section>
 
       {/* Services Section - Modern & Interactive */}
-      <section className="py-24 relative overflow-hidden">
+      <section id="services" className="py-24 relative overflow-hidden" ref={servicesRef}>
+        <div id="portfolio">
         {/* Background decoration elements */}
         <div className="absolute top-20 right-0 w-64 h-64 bg-indigo-500/10 rounded-full opacity-70 blur-3xl animate-pulse-slow"></div>
         <div className="absolute bottom-20 left-0 w-80 h-80 bg-purple-500/10 rounded-full opacity-70 blur-3xl animate-pulse-slow delay-700"></div>
@@ -811,6 +904,7 @@ const Home = () => {
             
 
           </div>
+        </div>
           
           {/* View All Services Button */}
           <div className="mt-16 text-center reveal">
